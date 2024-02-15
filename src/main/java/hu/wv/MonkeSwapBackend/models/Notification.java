@@ -16,6 +16,7 @@ public class Notification {
     @NotNull
     private String type;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
 }

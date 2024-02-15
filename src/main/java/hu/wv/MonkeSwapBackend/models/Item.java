@@ -3,6 +3,8 @@ package hu.wv.MonkeSwapBackend.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 @Entity
 @Table(name = "items")
 public class Item {
@@ -36,6 +38,13 @@ public class Item {
     @NotNull
     private String priceTier;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
+
+    @OneToMany(mappedBy = "offeredItem")
+    private List<TradeOffer> offeredItems;
+
+    @OneToMany(mappedBy = "incomingItem")
+    private List<TradeOffer> incomingItems;
 }

@@ -12,11 +12,13 @@ public class TradeOffer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "offered_item_id")
-    private Long offeredItemId;
+    @ManyToOne
+    @JoinColumn(name = "offered_item_id")
+    private Item offeredItem;
 
-    @Column(name = "incoming_item_id")
-    private Long incomingItemId;
+    @ManyToOne
+    @JoinColumn(name = "incoming_item_id")
+    private Item incomingItem;
 
     private String comment;
 }

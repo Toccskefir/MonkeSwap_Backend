@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -45,4 +46,10 @@ public class User {
 
     @Column(name = "profile_picture")
     private String profilePicture;
+
+    @OneToMany(mappedBy = "userId")
+    private List<Item> items;
+
+    @OneToMany(mappedBy = "userId")
+    private List<Notification> notifications;
 }
