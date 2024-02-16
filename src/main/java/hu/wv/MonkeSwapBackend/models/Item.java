@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -40,6 +41,10 @@ public class Item {
     @Column(name = "price_tier")
     @NotNull
     private String priceTier;
+
+    @Column(name = "date_created")
+    @NotNull
+    private LocalDateTime dateCreated;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
