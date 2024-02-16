@@ -24,22 +24,4 @@ public class TradeOffer {
     private Item incomingItem;
 
     private String comment;
-
-    //CONSTRUCTORS
-    public TradeOffer() {
-
-    }
-
-    public TradeOffer(Long id, Item offeredItem, Item incomingItem, String comment) {
-        this.id = id;
-        this.offeredItem = offeredItem;
-        this.incomingItem = incomingItem;
-        this.comment = comment;
-    }
-
-    public TradeOffer(Item offeredItem, Item incomingItem, String comment) {
-        this.offeredItem = offeredItem;
-        this.incomingItem = incomingItem;
-        this.comment = comment;
-    }
 }

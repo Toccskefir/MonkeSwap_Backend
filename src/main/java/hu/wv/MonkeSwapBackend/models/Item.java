@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -42,10 +41,6 @@ public class Item {
     @NotNull
     private String priceTier;
 
-    @Column(name = "date_created")
-    @NotNull
-    private LocalDateTime dateCreated;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User userId;
@@ -55,51 +50,4 @@ public class Item {
 
     @OneToMany(mappedBy = "incomingItem")
     private List<TradeOffer> incomingItems;
-
-    //CONSTRUCTORS
-    public Item() {
-
-    }
-
-    public Item(Long id,
-                String title,
-                String itemPicture,
-                String description,
-                Integer views,
-                Integer reports,
-                String state,
-                String category,
-                String priceTier,
-                User userId) {
-        this.id = id;
-        this.title = title;
-        this.itemPicture = itemPicture;
-        this.description = description;
-        this.views = views;
-        this.reports = reports;
-        this.state = state;
-        this.category = category;
-        this.priceTier = priceTier;
-        this.userId = userId;
-    }
-
-    public Item(String title,
-                String itemPicture,
-                String description,
-                Integer views,
-                Integer reports,
-                String state,
-                String category,
-                String priceTier,
-                User userId) {
-        this.title = title;
-        this.itemPicture = itemPicture;
-        this.description = description;
-        this.views = views;
-        this.reports = reports;
-        this.state = state;
-        this.category = category;
-        this.priceTier = priceTier;
-        this.userId = userId;
-    }
 }
