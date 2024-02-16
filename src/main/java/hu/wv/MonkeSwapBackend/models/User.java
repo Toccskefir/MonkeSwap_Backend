@@ -1,5 +1,6 @@
 package hu.wv.MonkeSwapBackend.models;
 
+import hu.wv.MonkeSwapBackend.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -31,8 +32,9 @@ public class User {
     @NotNull
     private Integer tradesCompleted;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String role;
+    private UserRole role;
 
     @Column(name = "date_of_registration")
     @NotNull

@@ -1,5 +1,6 @@
 package hu.wv.MonkeSwapBackend.models;
 
+import hu.wv.MonkeSwapBackend.enums.NotificationType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -16,8 +17,9 @@ public class Notification {
     @NotNull
     private String message;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String type;
+    private NotificationType type;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

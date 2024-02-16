@@ -1,6 +1,6 @@
 package hu.wv.MonkeSwapBackend.enums;
 
-public enum MessageType {
+public enum NotificationType {
     NOTIFICATION,
     WARNING;
 }

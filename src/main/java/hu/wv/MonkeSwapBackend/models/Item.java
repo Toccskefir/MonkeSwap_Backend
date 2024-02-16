@@ -1,5 +1,7 @@
 package hu.wv.MonkeSwapBackend.models;
 
+import hu.wv.MonkeSwapBackend.enums.ItemCategory;
+import hu.wv.MonkeSwapBackend.enums.ItemState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -31,11 +33,13 @@ public class Item {
     @NotNull
     private Integer reports;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String state;
+    private ItemState state;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String category;
+    private ItemCategory category;
 
     @Column(name = "price_tier")
     @NotNull
