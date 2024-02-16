@@ -2,13 +2,16 @@ package hu.wv.MonkeSwapBackend.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User {
+    //ATTRIBUTES
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -52,4 +55,57 @@ public class User {
 
     @OneToMany(mappedBy = "userId")
     private List<Notification> notifications;
+
+    //CONSTRUCTORS
+    public User() {
+
+    }
+
+    public User(
+            Long id,
+            String email,
+            String username,
+            String password,
+            Integer tradesCompleted,
+            String role,
+            String dateOfRegistration,
+            String fullName,
+            LocalDate dateOfBirth,
+            String phoneNumber,
+            String profilePicture) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.tradesCompleted = tradesCompleted;
+        this.role = role;
+        this.dateOfRegistration = dateOfRegistration;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.profilePicture = profilePicture;
+    }
+
+    public User(
+            String email,
+            String username,
+            String password,
+            Integer tradesCompleted,
+            String role,
+            String dateOfRegistration,
+            String fullName,
+            LocalDate dateOfBirth,
+            String phoneNumber,
+            String profilePicture) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.tradesCompleted = tradesCompleted;
+        this.role = role;
+        this.dateOfRegistration = dateOfRegistration;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.profilePicture = profilePicture;
+    }
 }
