@@ -1,4 +1,4 @@
-package hu.wv.MonkeSwapBackend.models;
+package hu.wv.MonkeSwapBackend.model;
 
 import hu.wv.MonkeSwapBackend.enums.UserRole;
 import jakarta.persistence.*;

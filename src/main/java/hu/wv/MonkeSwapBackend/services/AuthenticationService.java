@@ -4,7 +4,7 @@ import hu.wv.MonkeSwapBackend.authentication.AuthenticationResponse;
 import hu.wv.MonkeSwapBackend.authentication.LoginRequest;
 import hu.wv.MonkeSwapBackend.authentication.RegisterRequest;
 import hu.wv.MonkeSwapBackend.enums.UserRole;
-import hu.wv.MonkeSwapBackend.models.User;
+import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
