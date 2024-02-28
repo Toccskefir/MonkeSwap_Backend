@@ -92,4 +92,15 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    //Overrides the UserDetails getUsername method to return email instead of username
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    //Method to return username because getUsername() method returns the email
+    public String getRealUsername() {
+        return this.username;
+    }
 }
