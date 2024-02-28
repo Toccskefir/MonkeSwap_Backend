@@ -41,8 +41,8 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateToken(UserDetails userDetials) {
-        return generateToken(new HashMap<>(), userDetials);
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
     }
 
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
