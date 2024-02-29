@@ -1,4 +1,4 @@
-package hu.wv.MonkeSwapBackend.models;
+package hu.wv.MonkeSwapBackend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

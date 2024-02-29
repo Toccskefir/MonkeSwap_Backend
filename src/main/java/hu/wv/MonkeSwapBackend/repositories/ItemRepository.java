@@ -1,6 +1,6 @@
 package hu.wv.MonkeSwapBackend.repositories;
 
-import hu.wv.MonkeSwapBackend.models.Item;
+import hu.wv.MonkeSwapBackend.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
