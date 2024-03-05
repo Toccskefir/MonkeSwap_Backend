@@ -3,6 +3,7 @@ package hu.wv.MonkeSwapBackend.services;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -44,6 +46,15 @@ public class UserService {
             String currentPrincipalName = authentication.getName();
             User user = userRepository.findByEmail(currentPrincipalName).get();
             return this.convertUserToUserDto(user);
+        }
+    }
+
+    public UserDto getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return this.convertUserToUserDto(user.get());
+        } else {
+            throw new ObjectNotFoundException("userId", id);
         }
     }
 

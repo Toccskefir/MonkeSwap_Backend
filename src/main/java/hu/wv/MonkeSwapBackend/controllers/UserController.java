@@ -4,6 +4,7 @@ import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,11 @@ public class UserController {
     @GetMapping("/user")
     public UserDto getUser() {
         return this.userService.getUserFromContextHolder();
+    }
+
+    @GetMapping("/admin/user/{userId}")
+    public UserDto getUserById(@PathVariable("userId") Long userId) {
+        return this.userService.getUserById(userId);
     }
 
     @GetMapping("/admin/users")
