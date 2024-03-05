@@ -21,7 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDto convertUserToUserDto(User user) {
+    private UserDto convertUserToUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
