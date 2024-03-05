@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping
 public class UserController {
     private final UserService userService;
 
@@ -16,8 +18,13 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping()
+    @GetMapping("/user")
     public UserDto getUser() {
         return this.userService.getUserFromContextHolder();
+    }
+
+    @GetMapping("/admin/users")
+    public List<UserDto> getUsers() {
+        return this.userService.getAllUsers();
     }
 }
