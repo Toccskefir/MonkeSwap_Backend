@@ -4,13 +4,19 @@ import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "items")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
     //ATTRIBUTES
     @Id
