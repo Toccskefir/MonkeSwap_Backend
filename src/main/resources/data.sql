@@ -6,7 +6,7 @@ INSERT INTO users (email,
                    date_of_registration)
 VALUES ('admin@email.com',
         'admin',
-        'admin123',
+        '$2a$12$sgTc/OqACuFpcoOTFZT9POsNJWphzoVaYjGbZvKpyuCjOMTYiZ0TG', --admin123
         0,
         'ADMIN',
         CAST(CURRENT_DATE AS VARCHAR(255)));
