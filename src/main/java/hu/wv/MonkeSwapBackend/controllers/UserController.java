@@ -3,14 +3,12 @@ package hu.wv.MonkeSwapBackend.controllers;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping
 public class UserController {
     private final UserService userService;
