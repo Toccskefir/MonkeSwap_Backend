@@ -1,6 +1,7 @@
 package hu.wv.MonkeSwapBackend.services;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
+import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.Item;
@@ -42,6 +43,18 @@ public class ItemService {
     public List<ItemDto> getEnabledItems() {
         List<Item> enabledItems = this.itemRepository.findAllByState(ItemState.ENABLED);
         return convertItemToItemDto(enabledItems);
+    }
+
+    public List<ItemDto> getEnabledItemsByCategory(String itemCategory) {
+        ItemCategory category = ItemCategory.findByName(itemCategory);
+
+        if (category == null) {
+            throw new IllegalArgumentException("Given category not exists");
+        }
+
+        List<Item> enabledItemsByCategory =
+                this.itemRepository.findAllByCategoryAndState(category, ItemState.ENABLED);
+        return convertItemToItemDto(enabledItemsByCategory);
     }
 
     public List<ItemDto> getReportedItems() {

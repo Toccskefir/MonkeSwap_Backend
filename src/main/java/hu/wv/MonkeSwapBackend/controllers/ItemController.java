@@ -1,6 +1,7 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
+import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class ItemController {
     @GetMapping("/items")
     public List<ItemDto> getEnabledItems() {
         return this.itemService.getEnabledItems();
+    }
+
+    @GetMapping("/items/{itemCategory}")
+    public List<ItemDto> getEnabledItemsByCategory(@PathVariable("itemCategory")String itemCategory) {
+        return this.itemService.getEnabledItemsByCategory(itemCategory);
     }
 
     @GetMapping("/admin/items")
