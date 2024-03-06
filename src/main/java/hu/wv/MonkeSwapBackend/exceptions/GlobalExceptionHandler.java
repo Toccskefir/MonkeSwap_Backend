@@ -1,5 +1,6 @@
 package hu.wv.MonkeSwapBackend.exceptions;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +21,9 @@ public class GlobalExceptionHandler {
 
     //Handler for exceptions that return with not found
     //Status code 404
-    @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler({
+            BadCredentialsException.class,
+            ObjectNotFoundException.class})
     public ResponseEntity<String> handleNotFoundExceptions(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
