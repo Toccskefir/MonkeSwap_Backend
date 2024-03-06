@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByState(ItemState state);
+    List<Item> findAllByReportsGreaterThanEqual(Integer reports);
 }

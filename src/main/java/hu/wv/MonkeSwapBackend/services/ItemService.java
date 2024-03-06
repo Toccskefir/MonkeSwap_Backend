@@ -28,15 +28,26 @@ public class ItemService {
                 .itemPicture(item.getItemPicture())
                 .description(item.getDescription())
                 .views(item.getViews())
+                .state(item.getState())
                 .category(item.getCategory())
                 .priceTier(item.getPriceTier())
                 .build();
     }
 
     public List<ItemDto> getEnabledItems() {
-        List<Item> enabledItems = itemRepository.findAllByState(ItemState.ENABLED);
+        List<Item> enabledItems = this.itemRepository.findAllByState(ItemState.ENABLED);
         List<ItemDto> responseList = new ArrayList<>();
         enabledItems.forEach(item -> {
+            ItemDto itemDto = this.convertItemToItemDto(item);
+            responseList.add(itemDto);
+        });
+        return responseList;
+    }
+
+    public List<ItemDto> getReportedItems() {
+        List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
+        List<ItemDto> responseList = new ArrayList<>();
+        reportedItems.forEach(item -> {
             ItemDto itemDto = this.convertItemToItemDto(item);
             responseList.add(itemDto);
         });

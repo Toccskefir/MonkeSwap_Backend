@@ -23,6 +23,11 @@ public class ItemController {
         return this.itemService.getEnabledItems();
     }
 
+    @GetMapping("/admin/items")
+    public List<ItemDto> getReportedItems() {
+        return this.itemService.getReportedItems();
+    }
+
     @PostMapping("/item")
     public void createItem(@RequestBody Item item) {
         this.itemService.createItem(item);
