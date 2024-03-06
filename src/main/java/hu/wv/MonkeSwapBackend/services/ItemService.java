@@ -1,5 +1,6 @@
 package hu.wv.MonkeSwapBackend.services;
 
+import hu.wv.MonkeSwapBackend.dtos.ItemDto;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.Item;
@@ -8,6 +9,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
@@ -15,6 +19,28 @@ public class ItemService {
     @Autowired
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+    }
+
+    private ItemDto convertItemToItemDto(Item item) {
+        return ItemDto.builder()
+                .id(item.getId())
+                .title(item.getTitle())
+                .itemPicture(item.getItemPicture())
+                .description(item.getDescription())
+                .views(item.getViews())
+                .category(item.getCategory())
+                .priceTier(item.getPriceTier())
+                .build();
+    }
+
+    public List<ItemDto> getEnabledItems() {
+        List<Item> enabledItems = itemRepository.findAllByState(ItemState.ENABLED);
+        List<ItemDto> responseList = new ArrayList<>();
+        enabledItems.forEach(item -> {
+            ItemDto itemDto = this.convertItemToItemDto(item);
+            responseList.add(itemDto);
+        });
+        return responseList;
     }
 
     @Transactional
