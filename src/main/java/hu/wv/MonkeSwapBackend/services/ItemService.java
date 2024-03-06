@@ -21,37 +21,32 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    private ItemDto convertItemToItemDto(Item item) {
-        return ItemDto.builder()
-                .id(item.getId())
-                .title(item.getTitle())
-                .itemPicture(item.getItemPicture())
-                .description(item.getDescription())
-                .views(item.getViews())
-                .state(item.getState())
-                .category(item.getCategory())
-                .priceTier(item.getPriceTier())
-                .build();
+    private List<ItemDto> convertItemToItemDto(List<Item> list) {
+        List<ItemDto> listToReturn = new ArrayList<>();
+        list.forEach(item -> {
+            ItemDto itemDto = ItemDto.builder()
+                    .id(item.getId())
+                    .title(item.getTitle())
+                    .itemPicture(item.getItemPicture())
+                    .description(item.getDescription())
+                    .views(item.getViews())
+                    .state(item.getState())
+                    .category(item.getCategory())
+                    .priceTier(item.getPriceTier())
+                    .build();
+            listToReturn.add(itemDto);
+        });
+        return listToReturn;
     }
 
     public List<ItemDto> getEnabledItems() {
         List<Item> enabledItems = this.itemRepository.findAllByState(ItemState.ENABLED);
-        List<ItemDto> responseList = new ArrayList<>();
-        enabledItems.forEach(item -> {
-            ItemDto itemDto = this.convertItemToItemDto(item);
-            responseList.add(itemDto);
-        });
-        return responseList;
+        return convertItemToItemDto(enabledItems);
     }
 
     public List<ItemDto> getReportedItems() {
         List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
-        List<ItemDto> responseList = new ArrayList<>();
-        reportedItems.forEach(item -> {
-            ItemDto itemDto = this.convertItemToItemDto(item);
-            responseList.add(itemDto);
-        });
-        return responseList;
+        return convertItemToItemDto(reportedItems);
     }
 
     @Transactional
