@@ -27,7 +27,7 @@ public class UserService {
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .username(user.getUsername())
+                .username(user.getRealUsername())
                 .tradesCompleted(user.getTradesCompleted())
                 .role(user.getRole())
                 .dateOfRegistration(user.getDateOfRegistration())
