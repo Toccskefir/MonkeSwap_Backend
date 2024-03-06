@@ -11,4 +11,15 @@ public enum ItemCategory {
     COLLECTIBLES,
     PETS,
     OTHER;
+
+    public static ItemCategory findByName(String name) {
+        ItemCategory result = null;
+        for (ItemCategory category : values()) {
+            if (category.name().equalsIgnoreCase(name)) {
+                result = category;
+                break;
+            }
+        }
+        return result;
+    }
 }
