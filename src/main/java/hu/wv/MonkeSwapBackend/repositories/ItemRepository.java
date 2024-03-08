@@ -13,5 +13,6 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByStateAndUserIdNot(ItemState state, User user);
     List<Item> findAllByCategoryAndStateAndUserIdNot(ItemCategory category, ItemState state, User user);
+    List<Item> findAllByUserIdAndState(User user, ItemState state);
     List<Item> findAllByReportsGreaterThanEqual(Integer reports);
 }

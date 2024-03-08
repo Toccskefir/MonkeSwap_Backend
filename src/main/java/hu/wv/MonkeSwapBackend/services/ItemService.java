@@ -5,10 +5,12 @@ import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.Item;
+import hu.wv.MonkeSwapBackend.model.Notification;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -75,6 +78,16 @@ public class ItemService {
         List<Item> enabledItemsByCategory =
                 this.itemRepository.findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, getCurrentUserId());
         return convertItemToItemDto(enabledItemsByCategory);
+    }
+
+    public List<ItemDto> getEnabledItemsByUserId(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            List<Item> items = itemRepository.findAllByUserIdAndState(user.get(), ItemState.ENABLED);
+            return convertItemToItemDto(items);
+        } else {
+            throw new ObjectNotFoundException("userId", userId);
+        }
     }
 
     public List<ItemDto> getReportedItems() {

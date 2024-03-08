@@ -29,6 +29,16 @@ public class ItemController {
         return this.itemService.getEnabledItemsByCategory(itemCategory);
     }
 
+    @GetMapping("/user/items/{userId}")
+    public List<ItemDto> getEnabledItemsByUserId(@PathVariable("userId")Long userId) {
+        return this.itemService.getEnabledItemsByUserId(userId);
+    }
+
+    /*@GetMapping("/item/{itemId}")
+    public List<ItemDto> getEnabledItemById(@PathVariable("itemId")Long itemId) {
+        return this.itemService.getEnabledItemById(itemId);
+    }*/
+
     @GetMapping("/admin/items")
     public List<ItemDto> getReportedItems() {
         return this.itemService.getReportedItems();
