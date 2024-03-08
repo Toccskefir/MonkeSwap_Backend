@@ -4,19 +4,27 @@ import hu.wv.MonkeSwapBackend.dtos.ItemDto;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
+import lombok.experimental.Helper;
 import lombok.experimental.UtilityClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@UtilityClass
+@Component
 public class CommonUtil {
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
 
-    public User getUserFromContextHolder() {
+    @Autowired
+    public CommonUtil(UserRepository userRepository) {
+        CommonUtil.userRepository = userRepository;
+    }
+
+    public static User getUserFromContextHolder() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             throw new IllegalArgumentException("Anonymous request");
@@ -26,7 +34,7 @@ public class CommonUtil {
         }
     }
 
-    public List<ItemDto> convertItemListToItemDtoList(List<Item> list) {
+    public static List<ItemDto> convertItemListToItemDtoList(List<Item> list) {
         List<ItemDto> listToReturn = new ArrayList<>();
         list.forEach(item -> {
             ItemDto itemDto = ItemDto.builder()
