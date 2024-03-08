@@ -8,13 +8,10 @@ import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
-import hu.wv.MonkeSwapBackend.utils.UserUtil;
+import hu.wv.MonkeSwapBackend.utils.CommonUtil;
 import jakarta.transaction.Transactional;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -66,7 +63,7 @@ public class ItemService {
     //returns all enabled items except the items of the logged-in user
     public List<ItemDto> getEnabledItems() {
         List<Item> enabledItems = this.itemRepository
-                .findAllByStateAndUserIdNot(ItemState.ENABLED, UserUtil.getUserFromContextHolder());
+                .findAllByStateAndUserIdNot(ItemState.ENABLED, CommonUtil.getUserFromContextHolder());
         return convertItemListToItemDtoList(enabledItems);
     }
 
@@ -79,7 +76,7 @@ public class ItemService {
         }
 
         List<Item> enabledItemsByCategory = this.itemRepository
-                .findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, UserUtil.getUserFromContextHolder());
+                .findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, CommonUtil.getUserFromContextHolder());
         return convertItemListToItemDtoList(enabledItemsByCategory);
     }
 
@@ -95,7 +92,7 @@ public class ItemService {
 
     public List<ItemDto> getLoggedInUserItems() {
         List<Item> items = this.itemRepository
-                .findAllByUserId(UserUtil.getUserFromContextHolder());
+                .findAllByUserId(CommonUtil.getUserFromContextHolder());
         return convertItemListToItemDtoList(items);
     }
 

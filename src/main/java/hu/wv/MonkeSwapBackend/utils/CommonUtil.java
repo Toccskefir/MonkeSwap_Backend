@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @UtilityClass
-public class UserUtil {
+public class CommonUtil {
     private UserRepository userRepository;
 
     public User getUserFromContextHolder() {
