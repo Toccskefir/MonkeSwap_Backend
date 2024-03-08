@@ -29,24 +29,6 @@ public class ItemService {
         this.userRepository = userRepository;
     }
 
-    private List<ItemDto> convertItemListToItemDtoList(List<Item> list) {
-        List<ItemDto> listToReturn = new ArrayList<>();
-        list.forEach(item -> {
-            ItemDto itemDto = ItemDto.builder()
-                    .id(item.getId())
-                    .title(item.getTitle())
-                    .itemPicture(item.getItemPicture())
-                    .description(item.getDescription())
-                    .views(item.getViews())
-                    .state(item.getState())
-                    .category(item.getCategory())
-                    .priceTier(item.getPriceTier())
-                    .build();
-            listToReturn.add(itemDto);
-        });
-        return listToReturn;
-    }
-
     private ItemDto convertItemToItemDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())
@@ -64,7 +46,7 @@ public class ItemService {
     public List<ItemDto> getEnabledItems() {
         List<Item> enabledItems = this.itemRepository
                 .findAllByStateAndUserIdNot(ItemState.ENABLED, CommonUtil.getUserFromContextHolder());
-        return convertItemListToItemDtoList(enabledItems);
+        return CommonUtil.convertItemListToItemDtoList(enabledItems);
     }
 
     //returns all enabled items by category except the items of the logged-in user
@@ -77,14 +59,14 @@ public class ItemService {
 
         List<Item> enabledItemsByCategory = this.itemRepository
                 .findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, CommonUtil.getUserFromContextHolder());
-        return convertItemListToItemDtoList(enabledItemsByCategory);
+        return CommonUtil.convertItemListToItemDtoList(enabledItemsByCategory);
     }
 
     public List<ItemDto> getEnabledItemsByUserId(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             List<Item> items = itemRepository.findAllByUserIdAndState(user.get(), ItemState.ENABLED);
-            return convertItemListToItemDtoList(items);
+            return CommonUtil.convertItemListToItemDtoList(items);
         } else {
             throw new ObjectNotFoundException("userId", userId);
         }
@@ -93,7 +75,7 @@ public class ItemService {
     public List<ItemDto> getLoggedInUserItems() {
         List<Item> items = this.itemRepository
                 .findAllByUserId(CommonUtil.getUserFromContextHolder());
-        return convertItemListToItemDtoList(items);
+        return CommonUtil.convertItemListToItemDtoList(items);
     }
 
     public ItemDto getItemById(Long id) {
@@ -107,7 +89,7 @@ public class ItemService {
 
     public List<ItemDto> getReportedItems() {
         List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
-        return convertItemListToItemDtoList(reportedItems);
+        return CommonUtil.convertItemListToItemDtoList(reportedItems);
     }
 
     @Transactional
