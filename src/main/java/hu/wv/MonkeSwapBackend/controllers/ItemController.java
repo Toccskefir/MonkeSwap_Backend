@@ -29,6 +29,11 @@ public class ItemController {
         return this.itemService.getEnabledItemsByCategory(itemCategory);
     }
 
+    @GetMapping("/user/items")
+    public List<ItemDto> getUserItems() {
+        return this.itemService.getUserItems();
+    }
+
     @GetMapping("/user/items/{userId}")
     public List<ItemDto> getEnabledItemsByUserId(@PathVariable("userId")Long userId) {
         return this.itemService.getEnabledItemsByUserId(userId);

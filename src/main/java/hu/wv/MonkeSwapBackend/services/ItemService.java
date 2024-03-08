@@ -90,6 +90,11 @@ public class ItemService {
         }
     }
 
+    public List<ItemDto> getUserItems() {
+        List<Item> items = this.itemRepository.findAllByUserId(getCurrentUserId());
+        return convertItemToItemDto(items);
+    }
+
     public List<ItemDto> getReportedItems() {
         List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
         return convertItemToItemDto(reportedItems);
