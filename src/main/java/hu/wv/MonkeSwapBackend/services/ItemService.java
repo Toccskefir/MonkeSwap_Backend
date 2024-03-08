@@ -5,9 +5,14 @@ import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.Item;
+import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
+import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,10 +21,12 @@ import java.util.List;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, UserRepository userRepository) {
         this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
     }
 
     private List<ItemDto> convertItemToItemDto(List<Item> list) {
@@ -40,11 +47,24 @@ public class ItemService {
         return listToReturn;
     }
 
+    //returns the logged-in user
+    private User getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            throw new IllegalArgumentException("Anonymous request");
+        } else {
+            String currentPrincipalName = authentication.getName();
+            return userRepository.findByEmail(currentPrincipalName).get();
+        }
+    }
+
+    //returns all enabled items except the items of the logged-in user
     public List<ItemDto> getEnabledItems() {
-        List<Item> enabledItems = this.itemRepository.findAllByState(ItemState.ENABLED);
+        List<Item> enabledItems = this.itemRepository.findAllByStateAndUserIdNot(ItemState.ENABLED, getCurrentUserId());
         return convertItemToItemDto(enabledItems);
     }
 
+    //returns all enabled items by category except the items of the logged-in user
     public List<ItemDto> getEnabledItemsByCategory(String itemCategory) {
         ItemCategory category = ItemCategory.findByName(itemCategory);
 
@@ -53,7 +73,7 @@ public class ItemService {
         }
 
         List<Item> enabledItemsByCategory =
-                this.itemRepository.findAllByCategoryAndState(category, ItemState.ENABLED);
+                this.itemRepository.findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, getCurrentUserId());
         return convertItemToItemDto(enabledItemsByCategory);
     }
 
