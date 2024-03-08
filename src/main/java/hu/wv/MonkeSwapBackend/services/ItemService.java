@@ -5,7 +5,6 @@ import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.Item;
-import hu.wv.MonkeSwapBackend.model.Notification;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
@@ -32,7 +31,7 @@ public class ItemService {
         this.userRepository = userRepository;
     }
 
-    private List<ItemDto> convertItemToItemDto(List<Item> list) {
+    private List<ItemDto> convertItemListToItemDtoList(List<Item> list) {
         List<ItemDto> listToReturn = new ArrayList<>();
         list.forEach(item -> {
             ItemDto itemDto = ItemDto.builder()
@@ -50,6 +49,19 @@ public class ItemService {
         return listToReturn;
     }
 
+    private ItemDto convertItemToItemDto(Item item) {
+        return ItemDto.builder()
+                .id(item.getId())
+                .title(item.getTitle())
+                .itemPicture(item.getItemPicture())
+                .description(item.getDescription())
+                .views(item.getViews())
+                .state(item.getState())
+                .category(item.getCategory())
+                .priceTier(item.getPriceTier())
+                .build();
+    }
+
     //returns the logged-in user
     private User getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,7 +76,7 @@ public class ItemService {
     //returns all enabled items except the items of the logged-in user
     public List<ItemDto> getEnabledItems() {
         List<Item> enabledItems = this.itemRepository.findAllByStateAndUserIdNot(ItemState.ENABLED, getCurrentUserId());
-        return convertItemToItemDto(enabledItems);
+        return convertItemListToItemDtoList(enabledItems);
     }
 
     //returns all enabled items by category except the items of the logged-in user
@@ -77,27 +89,36 @@ public class ItemService {
 
         List<Item> enabledItemsByCategory =
                 this.itemRepository.findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, getCurrentUserId());
-        return convertItemToItemDto(enabledItemsByCategory);
+        return convertItemListToItemDtoList(enabledItemsByCategory);
     }
 
     public List<ItemDto> getEnabledItemsByUserId(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             List<Item> items = itemRepository.findAllByUserIdAndState(user.get(), ItemState.ENABLED);
-            return convertItemToItemDto(items);
+            return convertItemListToItemDtoList(items);
         } else {
             throw new ObjectNotFoundException("userId", userId);
         }
     }
 
-    public List<ItemDto> getUserItems() {
+    public List<ItemDto> getLoggedInUserItems() {
         List<Item> items = this.itemRepository.findAllByUserId(getCurrentUserId());
-        return convertItemToItemDto(items);
+        return convertItemListToItemDtoList(items);
+    }
+
+    public ItemDto getItemById(Long id) {
+        Optional<Item> item = itemRepository.findById(id);
+        if (item.isPresent()) {
+            return this.convertItemToItemDto(item.get());
+        } else {
+            throw new ObjectNotFoundException("itemId", id);
+        }
     }
 
     public List<ItemDto> getReportedItems() {
         List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
-        return convertItemToItemDto(reportedItems);
+        return convertItemListToItemDtoList(reportedItems);
     }
 
     @Transactional

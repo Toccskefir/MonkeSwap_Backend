@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("/user/items")
     public List<ItemDto> getUserItems() {
-        return this.itemService.getUserItems();
+        return this.itemService.getLoggedInUserItems();
     }
 
     @GetMapping("/user/items/{userId}")

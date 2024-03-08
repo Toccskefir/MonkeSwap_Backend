@@ -29,10 +29,10 @@ public class ItemController {
         return this.itemService.getEnabledItemsByCategory(itemCategory);
     }
 
-    /*@GetMapping("/item/{itemId}")
-    public List<ItemDto> getEnabledItemById(@PathVariable("itemId")Long itemId) {
-        return this.itemService.getEnabledItemById(itemId);
-    }*/
+    @GetMapping("/item/{itemId}")
+    public ItemDto getItemById(@PathVariable("itemId")Long itemId) {
+        return this.itemService.getItemById(itemId);
+    }
 
     @GetMapping("/admin/items")
     public List<ItemDto> getReportedItems() {
