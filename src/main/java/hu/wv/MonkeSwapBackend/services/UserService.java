@@ -3,6 +3,7 @@ package hu.wv.MonkeSwapBackend.services;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
+import hu.wv.MonkeSwapBackend.utils.UserUtil;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -39,14 +40,7 @@ public class UserService {
     }
 
     public UserDto getUserFromContextHolder() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new IllegalArgumentException("Anonymous request");
-        } else {
-            String currentPrincipalName = authentication.getName();
-            User user = userRepository.findByEmail(currentPrincipalName).get();
-            return this.convertUserToUserDto(user);
-        }
+        return convertUserToUserDto(UserUtil.getUserFromContextHolder());
     }
 
     public UserDto getUserById(Long id) {

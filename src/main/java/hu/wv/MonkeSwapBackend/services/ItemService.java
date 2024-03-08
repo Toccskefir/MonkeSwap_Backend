@@ -8,6 +8,7 @@ import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
+import hu.wv.MonkeSwapBackend.utils.UserUtil;
 import jakarta.transaction.Transactional;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,20 +63,10 @@ public class ItemService {
                 .build();
     }
 
-    //returns the logged-in user
-    private User getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new IllegalArgumentException("Anonymous request");
-        } else {
-            String currentPrincipalName = authentication.getName();
-            return userRepository.findByEmail(currentPrincipalName).get();
-        }
-    }
-
     //returns all enabled items except the items of the logged-in user
     public List<ItemDto> getEnabledItems() {
-        List<Item> enabledItems = this.itemRepository.findAllByStateAndUserIdNot(ItemState.ENABLED, getCurrentUserId());
+        List<Item> enabledItems = this.itemRepository
+                .findAllByStateAndUserIdNot(ItemState.ENABLED, UserUtil.getUserFromContextHolder());
         return convertItemListToItemDtoList(enabledItems);
     }
 
@@ -87,8 +78,8 @@ public class ItemService {
             throw new IllegalArgumentException("Given category not exists");
         }
 
-        List<Item> enabledItemsByCategory =
-                this.itemRepository.findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, getCurrentUserId());
+        List<Item> enabledItemsByCategory = this.itemRepository
+                .findAllByCategoryAndStateAndUserIdNot(category, ItemState.ENABLED, UserUtil.getUserFromContextHolder());
         return convertItemListToItemDtoList(enabledItemsByCategory);
     }
 
@@ -103,7 +94,8 @@ public class ItemService {
     }
 
     public List<ItemDto> getLoggedInUserItems() {
-        List<Item> items = this.itemRepository.findAllByUserId(getCurrentUserId());
+        List<Item> items = this.itemRepository
+                .findAllByUserId(UserUtil.getUserFromContextHolder());
         return convertItemListToItemDtoList(items);
     }
 
