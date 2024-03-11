@@ -87,6 +87,15 @@ public class ItemService {
         }
     }
 
+    public ItemDto getReportedItemById(Long id) {
+        Optional<Item> item = itemRepository.findByIdAndReportsGreaterThan(id, 5);
+        if (item.isPresent()) {
+            return this.convertItemToItemDto(item.get());
+        } else {
+            throw new ObjectNotFoundException("itemId", id);
+        }
+    }
+
     public List<ItemDto> getReportedItems() {
         List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
         return CommonUtil.convertItemListToItemDtoList(reportedItems);

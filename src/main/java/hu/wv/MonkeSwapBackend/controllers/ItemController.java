@@ -39,6 +39,11 @@ public class ItemController {
         return this.itemService.getReportedItems();
     }
 
+    @GetMapping("/admin/item/{itemId}")
+    public ItemDto getReportedItemById(@PathVariable("itemId")Long itemId) {
+        return this.itemService.getReportedItemById(itemId);
+    }
+
     @PostMapping("/item")
     public void createItem(@RequestBody Item item) {
         this.itemService.createItem(item);
