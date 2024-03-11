@@ -4,6 +4,7 @@ import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import hu.wv.MonkeSwapBackend.utils.CommonUtil;
+import jakarta.transaction.Transactional;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,26 @@ public class UserService {
             responseList.add(userDto);
         });
         return responseList;
+    }
+
+    public void deleteUser() {
+        Long userId = CommonUtil.getUserFromContextHolder().getId();
+        if (userId == 1) {
+            throw new IllegalArgumentException("Can not delete this user");
+        }
+        this.userRepository.deleteById(userId);
+    }
+
+    public void deleteUserById(Long id) {
+        if (id == 1) {
+            throw new IllegalArgumentException("Can not delete this user");
+        }
+
+        Optional<User> userToDelete = this.userRepository.findById(id);
+        if (userToDelete.isPresent()) {
+            this.userRepository.deleteById(id);
+        } else {
+            throw new ObjectNotFoundException("userId", id);
+        }
     }
 }
