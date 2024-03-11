@@ -137,4 +137,14 @@ public class ItemService {
             throw new ObjectNotFoundException("itemId", id);
         }
     }
+
+    public void deleteAnyItemById(Long id) {
+        Optional<Item> item = itemRepository.findById(id);
+
+        if (item.isPresent()) {
+            this.itemRepository.deleteById(id);
+        } else {
+            throw new ObjectNotFoundException("itemId", id);
+        }
+    }
 }
