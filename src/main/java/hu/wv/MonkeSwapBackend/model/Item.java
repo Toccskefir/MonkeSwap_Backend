@@ -55,9 +55,9 @@ public class Item {
     @JoinColumn(name = "user_id")
     private User userId;
 
-    @OneToMany(mappedBy = "offeredItem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "offeredItem")
     private List<TradeOffer> offeredItems;
 
-    @OneToMany(mappedBy = "incomingItem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "incomingItem")
     private List<TradeOffer> incomingItems;
 }
