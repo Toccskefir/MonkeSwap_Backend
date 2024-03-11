@@ -18,4 +18,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByUserId(User user);
     List<Item> findAllByReportsGreaterThanEqual(Integer reports);
     Optional<Item> findByIdAndReportsGreaterThan(Long id, Integer reports);
+    Optional<Item> findByIdAndUserId(Long id, User user);
 }

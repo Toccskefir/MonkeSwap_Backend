@@ -126,4 +126,15 @@ public class ItemService {
 
         this.itemRepository.save(item);
     }
+
+    public void deleteItemById(Long id) {
+        User user = CommonUtil.getUserFromContextHolder();
+        Optional<Item> item = itemRepository.findByIdAndUserId(id, user);
+
+        if (item.isPresent()) {
+            this.itemRepository.deleteById(id);
+        } else {
+            throw new ObjectNotFoundException("itemId", id);
+        }
+    }
 }
