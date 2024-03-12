@@ -7,6 +7,7 @@ import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
+import hu.wv.MonkeSwapBackend.repositories.TradeOfferRepository;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import hu.wv.MonkeSwapBackend.utils.CommonUtil;
 import jakarta.transaction.Transactional;
@@ -14,7 +15,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +22,16 @@ import java.util.Optional;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final TradeOfferRepository tradeOfferRepository;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, UserRepository userRepository) {
+    public ItemService(
+            ItemRepository itemRepository,
+            UserRepository userRepository,
+            TradeOfferRepository tradeOfferRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.tradeOfferRepository = tradeOfferRepository;
     }
 
     private ItemDto convertItemToItemDto(Item item) {
@@ -127,9 +132,26 @@ public class ItemService {
         this.itemRepository.save(item);
     }
 
+    @Transactional
+    public void updateItemState(Long id, String itemState) {
+        Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        ItemState state = ItemState.findByName(itemState);
+
+        if(state == null) {
+            throw new IllegalArgumentException("Given state not exists");
+        }
+
+        item.setState(state);
+
+        if(state == ItemState.DISABLED) {
+            this.tradeOfferRepository.deleteAllByOfferedItem(item);
+            this.tradeOfferRepository.deleteAllByIncomingItem(item);
+        }
+    }
+
     public void deleteItemById(Long id) {
         User user = CommonUtil.getUserFromContextHolder();
-        Optional<Item> item = itemRepository.findByIdAndUserId(id, user);
+        Optional<Item> item = this.itemRepository.findByIdAndUserId(id, user);
 
         if (item.isPresent()) {
             this.itemRepository.deleteById(id);
@@ -139,7 +161,7 @@ public class ItemService {
     }
 
     public void deleteAnyItemById(Long id) {
-        Optional<Item> item = itemRepository.findById(id);
+        Optional<Item> item = this.itemRepository.findById(id);
 
         if (item.isPresent()) {
             this.itemRepository.deleteById(id);

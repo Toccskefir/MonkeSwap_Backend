@@ -1,7 +1,6 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
-import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +46,13 @@ public class ItemController {
     @PostMapping("/item")
     public void createItem(@RequestBody Item item) {
         this.itemService.createItem(item);
+    }
+
+    @PutMapping("/admin/item/{itemId}")
+    public void updateItemState(
+            @PathVariable("itemId")Long itemId,
+            @RequestBody String itemState) {
+        this.itemService.updateItemState(itemId, itemState);
     }
 
     @DeleteMapping("/item/{itemId}")
