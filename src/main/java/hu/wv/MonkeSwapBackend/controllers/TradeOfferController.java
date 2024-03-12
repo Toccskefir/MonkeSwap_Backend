@@ -19,4 +19,9 @@ public class TradeOfferController {
     public void createTradeOffer(@RequestBody TradeOffer tradeOffer) {
         this.tradeOfferService.createTradeOffer(tradeOffer);
     }
+
+    @DeleteMapping("/{tradeOfferId}")
+    public void deleteTradeOfferById(@PathVariable("tradeOfferId")Long tradeOfferId) {
+        this.tradeOfferService.deleteTradeOfferById(tradeOfferId);
+    }
 }

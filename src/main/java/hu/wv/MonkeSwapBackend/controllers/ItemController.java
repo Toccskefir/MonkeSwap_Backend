@@ -48,4 +48,14 @@ public class ItemController {
     public void createItem(@RequestBody Item item) {
         this.itemService.createItem(item);
     }
+
+    @DeleteMapping("/item/{itemId}")
+    public void deleteItemById(@PathVariable("itemId")Long itemId) {
+        this.itemService.deleteItemById(itemId);
+    }
+
+    @DeleteMapping("/admin/item/{itemId}")
+    public void deleteAnyItemById(@PathVariable("itemId")Long itemId) {
+        this.itemService.deleteAnyItemById(itemId);
+    }
 }

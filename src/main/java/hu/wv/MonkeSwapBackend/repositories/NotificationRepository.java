@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findAllByUserId(User userId);
+    List<Notification> findAllByUserId(User user);
+    void deleteAllByUserId(User user);
 }

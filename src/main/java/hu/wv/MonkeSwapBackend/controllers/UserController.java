@@ -59,4 +59,14 @@ public class UserController {
     public List<UserDto> getUsers() {
         return this.userService.getAllUsers();
     }
+
+    @DeleteMapping("/user")
+    public void deleteUser() {
+        this.userService.deleteUser();
+    }
+
+    @DeleteMapping("/admin/user/{userId}")
+    public void deleteUserById(@PathVariable("userId") Long userId) {
+        this.userService.deleteUserById(userId);
+    }
 }
