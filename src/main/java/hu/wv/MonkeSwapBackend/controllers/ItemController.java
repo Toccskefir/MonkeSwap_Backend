@@ -1,6 +1,7 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
+import hu.wv.MonkeSwapBackend.dtos.ItemUpdateDto;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    //GET endpoints
     @GetMapping("/items")
     public List<ItemDto> getEnabledItems() {
         return this.itemService.getEnabledItems();
@@ -43,9 +45,18 @@ public class ItemController {
         return this.itemService.getReportedItemById(itemId);
     }
 
+    //POST endpoints
     @PostMapping("/item")
     public void createItem(@RequestBody Item item) {
         this.itemService.createItem(item);
+    }
+
+    //PUT endpoints
+    @PutMapping("/item/{itemId}")
+    public void updateItem(
+            @PathVariable("itemId")Long itemId
+            ,@RequestBody ItemUpdateDto itemDto) {
+        this.itemService.updateItem(itemId, itemDto);
     }
 
     @PutMapping("/admin/item/{itemId}")
@@ -55,6 +66,7 @@ public class ItemController {
         this.itemService.updateItemState(itemId, itemState);
     }
 
+    //DELETE endpoints
     @DeleteMapping("/item/{itemId}")
     public void deleteItemById(@PathVariable("itemId")Long itemId) {
         this.itemService.deleteItemById(itemId);

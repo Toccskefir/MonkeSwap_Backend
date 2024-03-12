@@ -1,6 +1,7 @@
 package hu.wv.MonkeSwapBackend.services;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
+import hu.wv.MonkeSwapBackend.dtos.ItemUpdateDto;
 import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
@@ -47,6 +48,7 @@ public class ItemService {
                 .build();
     }
 
+    //READ methods
     //returns all enabled items except the items of the logged-in user
     public List<ItemDto> getEnabledItems() {
         List<Item> enabledItems = this.itemRepository
@@ -106,6 +108,7 @@ public class ItemService {
         return CommonUtil.convertItemListToItemDtoList(reportedItems);
     }
 
+    //CREATE methods
     @Transactional
     public void createItem(Item request) {
         if (request.getTitle().isBlank()) {
@@ -132,6 +135,30 @@ public class ItemService {
         this.itemRepository.save(item);
     }
 
+    //UPDATE methods
+    @Transactional
+    public void updateItem(Long id, ItemUpdateDto itemDto) {
+        User user = CommonUtil.getUserFromContextHolder();
+        Item item = this.itemRepository.findByIdAndUserId(id, user)
+                .orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+
+        if (itemDto.getTitle().isBlank()) {
+            throw new IsEmptyException("Title");
+        }
+        if (itemDto.getItemPicture().isBlank()) {
+            throw new IsEmptyException("Picture");
+        }
+        if (itemDto.getDescription().isBlank()) {
+            throw new IsEmptyException("Description");
+        }
+
+        item.setTitle(itemDto.getTitle());
+        item.setItemPicture(itemDto.getItemPicture());
+        item.setDescription(itemDto.getDescription());
+        item.setCategory(itemDto.getCategory());
+        item.setPriceTier(itemDto.getPriceTier());
+    }
+
     @Transactional
     public void updateItemState(Long id, String itemState) {
         Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
@@ -149,6 +176,7 @@ public class ItemService {
         }
     }
 
+    //DELETE methods
     public void deleteItemById(Long id) {
         User user = CommonUtil.getUserFromContextHolder();
         Optional<Item> item = this.itemRepository.findByIdAndUserId(id, user);
