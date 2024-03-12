@@ -1,9 +1,6 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
-import hu.wv.MonkeSwapBackend.dtos.ItemDto;
-import hu.wv.MonkeSwapBackend.dtos.TradeOfferDto;
-import hu.wv.MonkeSwapBackend.dtos.UserDto;
-import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
+import hu.wv.MonkeSwapBackend.dtos.*;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import hu.wv.MonkeSwapBackend.services.TradeOfferService;
 import hu.wv.MonkeSwapBackend.services.UserService;
@@ -63,6 +60,11 @@ public class UserController {
     }
 
     //PUT endpoints
+    @PutMapping("/user")
+    public void updateUser(@RequestBody UserUpdateDto userDto) {
+        this.userService.updateUser(userDto);
+    }
+
     @PutMapping("/user/password")
     public void updateUserPassword(@RequestBody UserUpdatePasswordDto password) {
         this.userService.updateUserPassword(password);

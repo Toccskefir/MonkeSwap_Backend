@@ -1,9 +1,11 @@
 package hu.wv.MonkeSwapBackend.services;
 
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
+import hu.wv.MonkeSwapBackend.dtos.UserUpdateDto;
 import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
 import hu.wv.MonkeSwapBackend.enums.UserRole;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
+import hu.wv.MonkeSwapBackend.exceptions.IsRegisteredException;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import hu.wv.MonkeSwapBackend.utils.CommonUtil;
@@ -68,6 +70,24 @@ public class UserService {
     }
 
     //UPDATE methods
+    @Transactional
+    public void updateUser(UserUpdateDto userDto) {
+        User user = CommonUtil.getUserFromContextHolder();
+
+        if (this.userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+            throw new IsRegisteredException("Username is taken");
+        }
+        if (userDto.getUsername().isBlank()) {
+            throw new IsEmptyException("Username");
+        }
+
+        user.setUsername(userDto.getUsername());
+        user.setFullName(userDto.getFullName());
+        user.setDateOfBirth(userDto.getDateOfBirth());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setProfilePicture(userDto.getProfilePicture());
+    }
+
     @Transactional
     public void updateUserPassword(UserUpdatePasswordDto password) {
         User user = CommonUtil.getUserFromContextHolder();
