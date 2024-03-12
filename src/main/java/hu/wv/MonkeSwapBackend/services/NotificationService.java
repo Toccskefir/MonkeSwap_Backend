@@ -1,13 +1,12 @@
 package hu.wv.MonkeSwapBackend.services;
 
-import hu.wv.MonkeSwapBackend.dtos.ItemDto;
 import hu.wv.MonkeSwapBackend.dtos.NotificationDto;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
-import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.Notification;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.NotificationRepository;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
+import hu.wv.MonkeSwapBackend.utils.CommonUtil;
 import jakarta.transaction.Transactional;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +57,11 @@ public class NotificationService {
         }
 
         this.notificationRepository.save(notification);
+    }
+
+    @Transactional
+    public void deleteAllNotification() {
+        User user = CommonUtil.getUserFromContextHolder();
+        this.notificationRepository.deleteAllByUserId(user);
     }
 }

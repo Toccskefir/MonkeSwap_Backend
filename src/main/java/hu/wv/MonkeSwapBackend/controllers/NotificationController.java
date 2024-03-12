@@ -28,4 +28,9 @@ public class NotificationController {
     public void createNotification(@RequestBody Notification notification) {
         this.notificationService.createNotification(notification);
     }
+
+    @DeleteMapping()
+    public void deleteAllNotification() {
+        this.notificationService.deleteAllNotification();
+    }
 }
