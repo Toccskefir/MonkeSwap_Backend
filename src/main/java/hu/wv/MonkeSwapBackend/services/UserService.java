@@ -1,13 +1,16 @@
 package hu.wv.MonkeSwapBackend.services;
 
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
+import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
 import hu.wv.MonkeSwapBackend.enums.UserRole;
+import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import hu.wv.MonkeSwapBackend.utils.CommonUtil;
 import jakarta.transaction.Transactional;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +20,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     private UserDto convertUserToUserDto(User user) {
@@ -63,6 +68,17 @@ public class UserService {
     }
 
     //UPDATE methods
+    @Transactional
+    public void updateUserPassword(UserUpdatePasswordDto password) {
+        User user = CommonUtil.getUserFromContextHolder();
+
+        if(password.getPassword().isBlank()) {
+            throw new IsEmptyException("Password");
+        }
+
+        user.setPassword(encoder.encode(password.getPassword()));
+    }
+
     @Transactional
     public void updateUserRole(Long id, String userRole) {
         User user = this.userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("userId", id));

@@ -3,6 +3,7 @@ package hu.wv.MonkeSwapBackend.controllers;
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
 import hu.wv.MonkeSwapBackend.dtos.TradeOfferDto;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
+import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import hu.wv.MonkeSwapBackend.services.TradeOfferService;
 import hu.wv.MonkeSwapBackend.services.UserService;
@@ -13,7 +14,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping
 public class UserController {
     private final UserService userService;
     private final ItemService itemService;
@@ -63,6 +63,11 @@ public class UserController {
     }
 
     //PUT endpoints
+    @PutMapping("/user/password")
+    public void updateUserPassword(@RequestBody UserUpdatePasswordDto password) {
+        this.userService.updateUserPassword(password);
+    }
+
     @PutMapping("/admin/user/{userId}")
     public void updateUserRole(
             @PathVariable("userId")Long userId,
