@@ -25,6 +25,8 @@ public class UserController {
         this.itemService = itemService;
         this.tradeOfferService = tradeOfferService;
     }
+
+    //GET endpoints
     @GetMapping("/user")
     public UserDto getUser() {
         return this.userService.getUserFromContextHolder();
@@ -60,6 +62,15 @@ public class UserController {
         return this.userService.getAllUsers();
     }
 
+    //PUT endpoints
+    @PutMapping("/admin/user/{userId}")
+    public void updateUserRole(
+            @PathVariable("userId")Long userId,
+            @RequestBody String userRole) {
+        this.userService.updateUserRole(userId, userRole);
+    }
+
+    //DELETE endpoints
     @DeleteMapping("/user")
     public void deleteUser() {
         this.userService.deleteUser();
