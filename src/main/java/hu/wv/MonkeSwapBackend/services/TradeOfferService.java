@@ -8,6 +8,7 @@ import hu.wv.MonkeSwapBackend.repositories.ItemRepository;
 import hu.wv.MonkeSwapBackend.repositories.TradeOfferRepository;
 import hu.wv.MonkeSwapBackend.utils.CommonUtil;
 import jakarta.transaction.Transactional;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +72,16 @@ public class TradeOfferService {
         }
 
         this.tradeOfferRepository.save(tradeOffer);
+    }
+
+    @Transactional
+    public void deleteTradeOfferById(Long id) {
+        Optional<TradeOffer> tradeOfferToDelete = this.tradeOfferRepository.findById(id);
+
+        if (tradeOfferToDelete.isPresent()) {
+            this.tradeOfferRepository.deleteById(id);
+        } else {
+            throw new ObjectNotFoundException("tradeOfferId", id);
+        }
     }
 }
