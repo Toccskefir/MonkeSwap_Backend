@@ -137,7 +137,7 @@ public class ItemService {
 
     //UPDATE methods
     @Transactional
-    public void updateItem(Long id, ItemUpdateDto itemDto) {
+    public void updateItemById(Long id, ItemUpdateDto itemDto) {
         User user = CommonUtil.getUserFromContextHolder();
         Item item = this.itemRepository.findByIdAndUserId(id, user)
                 .orElseThrow(() -> new ObjectNotFoundException("itemId", id));
@@ -157,6 +157,13 @@ public class ItemService {
         item.setDescription(itemDto.getDescription());
         item.setCategory(itemDto.getCategory());
         item.setPriceTier(itemDto.getPriceTier());
+    }
+
+    @Transactional
+    public void updateItemViews(Long id) {
+        Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        Integer newViews = item.getViews() + 1;
+        item.setViews(newViews);
     }
 
     @Transactional

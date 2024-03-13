@@ -53,10 +53,15 @@ public class ItemController {
 
     //PUT endpoints
     @PutMapping("/item/{itemId}")
-    public void updateItem(
+    public void updateItemById(
             @PathVariable("itemId")Long itemId
             ,@RequestBody ItemUpdateDto itemDto) {
-        this.itemService.updateItem(itemId, itemDto);
+        this.itemService.updateItemById(itemId, itemDto);
+    }
+
+    @PutMapping("/item/views/{itemId}")
+    public void updateItemViews(@PathVariable("itemId")Long itemId) {
+        this.itemService.updateItemViews(itemId);
     }
 
     @PutMapping("/admin/item/{itemId}")
