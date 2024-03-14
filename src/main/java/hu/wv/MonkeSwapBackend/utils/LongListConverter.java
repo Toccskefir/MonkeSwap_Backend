@@ -14,8 +14,11 @@ public class LongListConverter implements AttributeConverter<List<Long>, String>
     private static final String SPLIT_CHAR = ";";
 
     @Override
-    public String convertToDatabaseColumn(List<Long> longs) {
-        return longs != null ? String.join(SPLIT_CHAR, longs.toString()) : "";
+    public String convertToDatabaseColumn(List<Long> longList) {
+        return longList != null ? longList.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(SPLIT_CHAR))
+                : "";
     }
 
     @Override
