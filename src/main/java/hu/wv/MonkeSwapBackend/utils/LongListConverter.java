@@ -23,7 +23,7 @@ public class LongListConverter implements AttributeConverter<List<Long>, String>
 
     @Override
     public List<Long> convertToEntityAttribute(String string) {
-        if (string == null) {
+        if (string.isEmpty()) {
             return emptyList();
         } else {
             return Stream.of(string.split(SPLIT_CHAR))

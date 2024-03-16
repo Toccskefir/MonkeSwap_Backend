@@ -16,6 +16,8 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,16 +97,21 @@ public class ItemService {
     }
 
     public ItemDto getReportedItemById(Long id) {
-        Optional<Item> item = itemRepository.findByIdAndReportsGreaterThan(id, 5);
-        if (item.isPresent()) {
-            return this.convertItemToItemDto(item.get());
-        } else {
+        Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        if (item.getReports().size() < 5) {
             throw new ObjectNotFoundException("itemId", id);
         }
+        return this.convertItemToItemDto(item);
     }
 
     public List<ItemDto> getReportedItems() {
-        List<Item> reportedItems = this.itemRepository.findAllByReportsGreaterThanEqual(5);
+        List<Item> items = this.itemRepository.findAll();
+        List<Item> reportedItems = new ArrayList<>();
+        items.forEach(item -> {
+            if (item.getReports().size() >= 5) {
+                reportedItems.add(item);
+            }
+        });
         return CommonUtil.convertItemListToItemDtoList(reportedItems);
     }
 
@@ -126,7 +133,6 @@ public class ItemService {
                 .itemPicture(request.getItemPicture())
                 .description(request.getDescription())
                 .views(0)
-                .reports(0)
                 .state(ItemState.ENABLED)
                 .category(request.getCategory())
                 .priceTier(request.getPriceTier())
