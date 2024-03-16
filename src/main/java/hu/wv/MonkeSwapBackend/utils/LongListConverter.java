@@ -3,6 +3,7 @@ package hu.wv.MonkeSwapBackend.utils;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,7 +25,7 @@ public class LongListConverter implements AttributeConverter<List<Long>, String>
     @Override
     public List<Long> convertToEntityAttribute(String string) {
         if (string.isEmpty()) {
-            return emptyList();
+            return new ArrayList<>();
         } else {
             return Stream.of(string.split(SPLIT_CHAR))
                     .map(Long::valueOf)

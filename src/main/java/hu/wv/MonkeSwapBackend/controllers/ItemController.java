@@ -64,6 +64,11 @@ public class ItemController {
         this.itemService.updateItemViews(itemId);
     }
 
+    @PutMapping("/item/reports/{itemId}")
+    public void updateItemReports(@PathVariable("itemId")Long itemId) {
+        this.itemService.updateItemReports(itemId);
+    }
+
     @PutMapping("/admin/item/{itemId}")
     public void updateItemState(
             @PathVariable("itemId")Long itemId,

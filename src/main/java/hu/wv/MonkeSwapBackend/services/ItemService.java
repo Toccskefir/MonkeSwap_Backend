@@ -173,6 +173,19 @@ public class ItemService {
     }
 
     @Transactional
+    public void updateItemReports(Long id) {
+        User user = CommonUtil.getUserFromContextHolder();
+        Item item = this.itemRepository.findByIdAndUserIdNot(id, user)
+                .orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        List<Long> reports = item.getReports();
+        if (reports.contains(user.getId())) {
+            throw new IllegalArgumentException("Item already reported");
+        }
+        reports.add(user.getId());
+        item.setReports(reports);
+    }
+
+    @Transactional
     public void updateItemState(Long id, String itemState) {
         Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
         ItemState state = ItemState.findByName(itemState);

@@ -17,4 +17,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByUserIdAndState(User user, ItemState state);
     List<Item> findAllByUserId(User user);
     Optional<Item> findByIdAndUserId(Long id, User user);
+    Optional<Item> findByIdAndUserIdNot(Long id, User user);
 }
