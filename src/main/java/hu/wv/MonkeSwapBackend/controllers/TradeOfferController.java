@@ -19,23 +19,27 @@ public class TradeOfferController {
     }
 
     //GET methods
+    //returns a list of offered trade offers of the logged-in user
     @GetMapping("/offered")
     public List<TradeOfferDto> getOfferedTradeOffers() {
         return this.tradeOfferService.getOfferedTradeOffers();
     }
 
+    //returns a list of incoming trade offers of the logged-in user
     @GetMapping("/incoming")
     public List<TradeOfferDto> getIncomingTradeOffers() {
         return this.tradeOfferService.getIncomingTradeOffers();
     }
 
     //POST methods
+    //creates a trade offer with the given item ids
     @PostMapping
     public void createTradeOffer(@RequestBody TradeOfferDto tradeOffer) {
         this.tradeOfferService.createTradeOffer(tradeOffer);
     }
 
     //DELETE methods
+    //deletes a trade offer by id
     @DeleteMapping("/{tradeOfferId}")
     public void deleteTradeOfferById(@PathVariable("tradeOfferId")Long tradeOfferId) {
         this.tradeOfferService.deleteTradeOfferById(tradeOfferId);

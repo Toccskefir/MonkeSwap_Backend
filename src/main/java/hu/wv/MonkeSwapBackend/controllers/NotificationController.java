@@ -20,18 +20,21 @@ public class NotificationController {
     }
 
     //GET endpoints
+    //returns a lift of notifications of the logged-in user
     @GetMapping
     public List<NotificationDto> getNotificationsByUserId() {
         return this.notificationService.getNotificationsByUserId();
     }
 
     //POST endpoints
+    //creates a notification with given userId
     @PostMapping
     public void createNotification(@RequestBody NotificationCreateDto notification) {
         this.notificationService.createNotification(notification);
     }
 
     //DELETE endpoints
+    //deletes all notifications of the logged-in user
     @DeleteMapping()
     public void deleteAllNotification() {
         this.notificationService.deleteAllNotification();
