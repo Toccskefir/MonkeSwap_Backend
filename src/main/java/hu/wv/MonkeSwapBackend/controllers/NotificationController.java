@@ -1,5 +1,6 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
+import hu.wv.MonkeSwapBackend.dtos.NotificationCreateDto;
 import hu.wv.MonkeSwapBackend.dtos.NotificationDto;
 import hu.wv.MonkeSwapBackend.model.Notification;
 import hu.wv.MonkeSwapBackend.services.NotificationService;
@@ -27,7 +28,7 @@ public class NotificationController {
 
     //POST endpoints
     @PostMapping
-    public void createNotification(@RequestBody Notification notification) {
+    public void createNotification(@RequestBody NotificationCreateDto notification) {
         this.notificationService.createNotification(notification);
     }
 
