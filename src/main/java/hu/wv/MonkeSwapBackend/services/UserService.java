@@ -128,11 +128,12 @@ public class UserService {
             throw new IllegalArgumentException("Can not delete this user");
         }
 
-        Optional<User> userToDelete = this.userRepository.findById(id);
-        if (userToDelete.isPresent()) {
-            this.userRepository.deleteById(id);
-        } else {
-            throw new ObjectNotFoundException("userId", id);
+        User userToDelete = this.userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("userId", id));
+        if (userToDelete.getId().equals(CommonUtil.getUserFromContextHolder().getId())) {
+            throw new IllegalArgumentException("Can not delete your own user");
         }
+
+        this.userRepository.deleteById(id);
     }
 }
