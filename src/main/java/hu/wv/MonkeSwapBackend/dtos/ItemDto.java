@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,7 +19,9 @@ public class ItemDto {
     private String itemPicture;
     private String description;
     private Integer views;
+    private List<Long> reports;
     private ItemState state;
     private ItemCategory category;
     private String priceTier;
+    private Long userId;
 }

@@ -35,19 +35,6 @@ public class ItemService {
         this.tradeOfferRepository = tradeOfferRepository;
     }
 
-    private ItemDto convertItemToItemDto(Item item) {
-        return ItemDto.builder()
-                .id(item.getId())
-                .title(item.getTitle())
-                .itemPicture(item.getItemPicture())
-                .description(item.getDescription())
-                .views(item.getViews())
-                .state(item.getState())
-                .category(item.getCategory())
-                .priceTier(item.getPriceTier())
-                .build();
-    }
-
     //READ methods
     //returns all enabled items except the items of the logged-in user
     public List<ItemDto> getEnabledItems() {
@@ -84,7 +71,7 @@ public class ItemService {
 
     public ItemDto getItemById(Long id) {
         Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
-        return this.convertItemToItemDto(item);
+        return CommonUtil.convertItemToItemDto(item);
     }
 
     public ItemDto getReportedItemById(Long id) {
@@ -92,7 +79,7 @@ public class ItemService {
         if (item.getReports().size() < 5) {
             throw new ObjectNotFoundException("itemId", id);
         }
-        return this.convertItemToItemDto(item);
+        return CommonUtil.convertItemToItemDto(item);
     }
 
     public List<ItemDto> getReportedItems() {

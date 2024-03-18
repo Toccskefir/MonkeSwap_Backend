@@ -4,8 +4,6 @@ import hu.wv.MonkeSwapBackend.dtos.ItemDto;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
-import lombok.experimental.Helper;
-import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,20 +32,37 @@ public class CommonUtil {
         }
     }
 
+    public static ItemDto convertItemToItemDto(Item item) {
+        return ItemDto.builder()
+                .id(item.getId())
+                .title(item.getTitle())
+                .itemPicture(item.getItemPicture())
+                .description(item.getDescription())
+                .views(item.getViews())
+                .reports(item.getReports())
+                .state(item.getState())
+                .category(item.getCategory())
+                .priceTier(item.getPriceTier())
+                .userId(item.getUserId().getId())
+                .build();
+    }
+
     public static List<ItemDto> convertItemListToItemDtoList(List<Item> list) {
         List<ItemDto> listToReturn = new ArrayList<>();
         list.forEach(item -> {
-            ItemDto itemDto = ItemDto.builder()
+            ItemDto dto = ItemDto.builder()
                     .id(item.getId())
                     .title(item.getTitle())
                     .itemPicture(item.getItemPicture())
                     .description(item.getDescription())
                     .views(item.getViews())
+                    .reports(item.getReports())
                     .state(item.getState())
                     .category(item.getCategory())
                     .priceTier(item.getPriceTier())
+                    .userId(item.getUserId().getId())
                     .build();
-            listToReturn.add(itemDto);
+            listToReturn.add(dto);
         });
         return listToReturn;
     }
