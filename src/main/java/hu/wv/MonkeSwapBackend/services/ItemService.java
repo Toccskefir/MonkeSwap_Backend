@@ -114,6 +114,7 @@ public class ItemService {
                 .state(ItemState.ENABLED)
                 .category(request.getCategory())
                 .priceTier(request.getPriceTier())
+                .userId(CommonUtil.getUserFromContextHolder())
                 .build();
 
         this.itemRepository.save(item);
