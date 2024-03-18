@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -54,8 +55,10 @@ public class UserService {
     public void updateUser(UserUpdateDto userDto) {
         User user = CommonUtil.getUserFromContextHolder();
 
-        if (this.userRepository.findByUsername(userDto.getUsername()).isPresent()) {
-            throw new IsRegisteredException("Username is taken");
+        if (!Objects.equals(userDto.getUsername(), user.getRealUsername())) {
+            if (this.userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+                throw new IsRegisteredException("Username is taken");
+            }
         }
         if (userDto.getUsername().isBlank()) {
             throw new IsEmptyException("Username");
