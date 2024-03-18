@@ -68,8 +68,8 @@ public class CommonUtil {
     public static TradeOfferDto convertTradeOfferToTradeOfferDto(TradeOffer offer) {
         return TradeOfferDto.builder()
                 .id(offer.getId())
-                .offeredItem(offer.getOfferedItem())
-                .incomingItem(offer.getIncomingItem())
+                .offeredItem(offer.getOfferedItem().getId())
+                .incomingItem(offer.getIncomingItem().getId())
                 .comment(offer.getComment())
                 .build();
     }
