@@ -2,6 +2,7 @@ package hu.wv.MonkeSwapBackend.model;
 
 import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
+import hu.wv.MonkeSwapBackend.utils.LongListConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,8 +38,9 @@ public class Item {
     @NotNull
     private Integer views;
 
-    @NotNull
-    private Integer reports;
+    @Convert(converter = LongListConverter.class)
+    @Column(nullable = false)
+    private List<Long> reports = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @NotNull
