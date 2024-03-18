@@ -1,6 +1,7 @@
 package hu.wv.MonkeSwapBackend.utils;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
+import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
@@ -30,6 +31,21 @@ public class CommonUtil {
             String currentPrincipalName = authentication.getName();
             return userRepository.findByEmail(currentPrincipalName).get();
         }
+    }
+
+    public static UserDto convertUserToUserDto(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getRealUsername())
+                .tradesCompleted(user.getTradesCompleted())
+                .role(user.getRole())
+                .dateOfRegistration(user.getDateOfRegistration())
+                .fullName(user.getFullName())
+                .dateOfBirth(user.getDateOfBirth())
+                .phoneNumber(user.getPhoneNumber())
+                .profilePicture(user.getProfilePicture())
+                .build();
     }
 
     public static ItemDto convertItemToItemDto(Item item) {

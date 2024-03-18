@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -30,40 +29,21 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    private UserDto convertUserToUserDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .username(user.getRealUsername())
-                .tradesCompleted(user.getTradesCompleted())
-                .role(user.getRole())
-                .dateOfRegistration(user.getDateOfRegistration())
-                .fullName(user.getFullName())
-                .dateOfBirth(user.getDateOfBirth())
-                .phoneNumber(user.getPhoneNumber())
-                .profilePicture(user.getProfilePicture())
-                .build();
-    }
-
     //READ methods
     public UserDto getUserFromContextHolder() {
-        return convertUserToUserDto(CommonUtil.getUserFromContextHolder());
+        return CommonUtil.convertUserToUserDto(CommonUtil.getUserFromContextHolder());
     }
 
     public UserDto getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return this.convertUserToUserDto(user.get());
-        } else {
-            throw new ObjectNotFoundException("userId", id);
-        }
+        User user = this.userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("userId", id));
+        return CommonUtil.convertUserToUserDto(user);
     }
 
     public List<UserDto> getAllUsers() {
-        List<User> usersList = userRepository.findAll();
+        List<User> usersList = this.userRepository.findAll();
         List<UserDto> responseList = new ArrayList<>();
         usersList.forEach(item -> {
-            UserDto userDto = this.convertUserToUserDto(item);
+            UserDto userDto = CommonUtil.convertUserToUserDto(item);
             responseList.add(userDto);
         });
         return responseList;
