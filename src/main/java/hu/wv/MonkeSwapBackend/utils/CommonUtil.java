@@ -2,9 +2,11 @@ package hu.wv.MonkeSwapBackend.utils;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
 import hu.wv.MonkeSwapBackend.dtos.NotificationDto;
+import hu.wv.MonkeSwapBackend.dtos.TradeOfferDto;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.model.Item;
 import hu.wv.MonkeSwapBackend.model.Notification;
+import hu.wv.MonkeSwapBackend.model.TradeOffer;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,15 @@ public class CommonUtil {
             listToReturn.add(dto);
         });
         return listToReturn;
+    }
+
+    public static TradeOfferDto convertTradeOfferToTradeOfferDto(TradeOffer offer) {
+        return TradeOfferDto.builder()
+                .id(offer.getId())
+                .offeredItem(offer.getOfferedItem())
+                .incomingItem(offer.getIncomingItem())
+                .comment(offer.getComment())
+                .build();
     }
 
     public static ItemDto convertItemToItemDto(Item item) {

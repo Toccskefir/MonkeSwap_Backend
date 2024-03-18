@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TradeOfferService {
@@ -27,45 +26,38 @@ public class TradeOfferService {
         this.itemRepository = itemRepository;
     }
 
-    private TradeOfferDto convertTradeOfferToTradeOfferDto(TradeOffer item) {
-        return TradeOfferDto.builder()
-                .id(item.getId())
-                .offeredItem(item.getOfferedItem())
-                .incomingItem(item.getIncomingItem())
-                .comment(item.getComment())
-                .build();
-    }
-
+    //READ methods
     public List<TradeOfferDto> getOfferedTradeOffers() {
-        List<Item> items = itemRepository
+        List<Item> items = this.itemRepository
                 .findAllByUserIdAndState(CommonUtil.getUserFromContextHolder(), ItemState.ENABLED);
         List<TradeOfferDto> offeredTradeOffers = new ArrayList<>();
         items.forEach(item -> {
-            Optional<TradeOffer> tradeOffer = this.tradeOfferRepository.findTradeOfferByOfferedItem(item);
-            tradeOffer.ifPresent(offer -> offeredTradeOffers.add(this.convertTradeOfferToTradeOfferDto(offer)));
+            List<TradeOffer> tradeOffers = this.tradeOfferRepository.findAllByOfferedItem(item);
+            tradeOffers.forEach(offer -> offeredTradeOffers.add(CommonUtil.convertTradeOfferToTradeOfferDto(offer)));
         });
         return offeredTradeOffers;
     }
 
     public List<TradeOfferDto> getIncomingTradeOffers() {
-        List<Item> items = itemRepository
+        List<Item> items = this.itemRepository
                 .findAllByUserIdAndState(CommonUtil.getUserFromContextHolder(), ItemState.ENABLED);
         List<TradeOfferDto> incomingTradeOffers = new ArrayList<>();
         items.forEach(item -> {
-            Optional<TradeOffer> tradeOffer = this.tradeOfferRepository.findTradeOfferByIncomingItem(item);
-            tradeOffer.ifPresent(offer -> incomingTradeOffers.add(this.convertTradeOfferToTradeOfferDto(offer)));
+            List<TradeOffer> tradeOffer = this.tradeOfferRepository.findAllByIncomingItem(item);
+            tradeOffer.forEach(offer -> incomingTradeOffers.add(CommonUtil.convertTradeOfferToTradeOfferDto(offer)));
         });
         return incomingTradeOffers;
     }
 
+    //CREATE methods
     @Transactional
     public void createTradeOffer(TradeOffer tradeOffer) {
-        if (this.tradeOfferRepository.findTradeOfferByOfferedItemAndIncomingItem(
+        if (this.tradeOfferRepository.findByOfferedItemAndIncomingItem(
                     tradeOffer.getOfferedItem(),
                     tradeOffer.getIncomingItem()).isPresent()){
             throw new IllegalArgumentException("Trade offer already sent");
         }
-        if (this.tradeOfferRepository.findTradeOfferByOfferedItemAndIncomingItem(
+        if (this.tradeOfferRepository.findByOfferedItemAndIncomingItem(
                     tradeOffer.getIncomingItem(),
                     tradeOffer.getOfferedItem()).isPresent()) {
             throw new IllegalArgumentException("Trade offer already received");
@@ -74,14 +66,10 @@ public class TradeOfferService {
         this.tradeOfferRepository.save(tradeOffer);
     }
 
+    //DELETE methods
     @Transactional
     public void deleteTradeOfferById(Long id) {
-        Optional<TradeOffer> tradeOfferToDelete = this.tradeOfferRepository.findById(id);
-
-        if (tradeOfferToDelete.isPresent()) {
-            this.tradeOfferRepository.deleteById(id);
-        } else {
-            throw new ObjectNotFoundException("tradeOfferId", id);
-        }
+        this.tradeOfferRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("tradeOfferId", id));
+        this.tradeOfferRepository.deleteById(id);
     }
 }
