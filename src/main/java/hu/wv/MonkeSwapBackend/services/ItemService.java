@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -72,13 +70,10 @@ public class ItemService {
     }
 
     public List<ItemDto> getEnabledItemsByUserId(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            List<Item> items = itemRepository.findAllByUserIdAndState(user.get(), ItemState.ENABLED);
-            return CommonUtil.convertItemListToItemDtoList(items);
-        } else {
-            throw new ObjectNotFoundException("userId", userId);
-        }
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("userId", userId));
+        List<Item> items = this.itemRepository.findAllByUserIdAndState(user, ItemState.ENABLED);
+        return CommonUtil.convertItemListToItemDtoList(items);
     }
 
     public List<ItemDto> getLoggedInUserItems() {
@@ -88,12 +83,8 @@ public class ItemService {
     }
 
     public ItemDto getItemById(Long id) {
-        Optional<Item> item = itemRepository.findById(id);
-        if (item.isPresent()) {
-            return this.convertItemToItemDto(item.get());
-        } else {
-            throw new ObjectNotFoundException("itemId", id);
-        }
+        Item item = this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        return this.convertItemToItemDto(item);
     }
 
     public ItemDto getReportedItemById(Long id) {
@@ -205,22 +196,13 @@ public class ItemService {
     //DELETE methods
     public void deleteItemById(Long id) {
         User user = CommonUtil.getUserFromContextHolder();
-        Optional<Item> item = this.itemRepository.findByIdAndUserId(id, user);
-
-        if (item.isPresent()) {
-            this.itemRepository.deleteById(id);
-        } else {
-            throw new ObjectNotFoundException("itemId", id);
-        }
+        this.itemRepository.findByIdAndUserId(id, user)
+                .orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        this.itemRepository.deleteById(id);
     }
 
     public void deleteAnyItemById(Long id) {
-        Optional<Item> item = this.itemRepository.findById(id);
-
-        if (item.isPresent()) {
-            this.itemRepository.deleteById(id);
-        } else {
-            throw new ObjectNotFoundException("itemId", id);
-        }
+        this.itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("itemId", id));
+        this.itemRepository.deleteById(id);
     }
 }
