@@ -42,7 +42,7 @@ VALUES ('Test Disabled',
         '',
         'DISABLED',
         'OTHER',
-        'test price tier',
+        3,
         2);
 
 INSERT INTO items (title,
@@ -61,7 +61,7 @@ VALUES ('Test Enabled',
         '',
         'ENABLED',
         'OTHER',
-        'test price tier',
+        1,
         2);
 
 INSERT INTO items (title,
@@ -80,7 +80,7 @@ VALUES ('Test Reported',
         '1;2;3;4;5',
         'ENABLED',
         'OTHER',
-        'test price tier',
+        5,
         1);
 
 --NOTIFICATIONS

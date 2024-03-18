@@ -9,5 +9,5 @@ public class ItemUpdateDto {
     private String itemPicture;
     private String description;
     private ItemCategory category;
-    private String priceTier;
+    private Integer priceTier;
 }

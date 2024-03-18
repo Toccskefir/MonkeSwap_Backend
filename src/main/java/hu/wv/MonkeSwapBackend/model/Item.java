@@ -52,7 +52,7 @@ public class Item {
 
     @Column(name = "price_tier")
     @NotNull
-    private String priceTier;
+    private Integer priceTier;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

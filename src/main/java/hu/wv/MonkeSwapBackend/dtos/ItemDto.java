@@ -22,6 +22,6 @@ public class ItemDto {
     private List<Long> reports;
     private ItemState state;
     private ItemCategory category;
-    private String priceTier;
+    private Integer priceTier;
     private Long userId;
 }
