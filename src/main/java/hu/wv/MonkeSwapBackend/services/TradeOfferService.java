@@ -51,7 +51,18 @@ public class TradeOfferService {
 
     //CREATE methods
     @Transactional
-    public void createTradeOffer(TradeOffer tradeOffer) {
+    public void createTradeOffer(TradeOfferDto tradeOfferDto) {
+        Item offeredItem = this.itemRepository.findById(tradeOfferDto.getOfferedItem())
+                .orElseThrow(() -> new ObjectNotFoundException("offeredItemId", tradeOfferDto.getOfferedItem()));
+        Item incomingItem = this.itemRepository.findById(tradeOfferDto.getIncomingItem())
+                .orElseThrow(() -> new ObjectNotFoundException("incomingItemId", tradeOfferDto.getIncomingItem()));
+
+        TradeOffer tradeOffer = TradeOffer.builder()
+                .offeredItem(offeredItem)
+                .incomingItem(incomingItem)
+                .comment(tradeOfferDto.getComment())
+                .build();
+
         if (this.tradeOfferRepository.findByOfferedItemAndIncomingItem(
                     tradeOffer.getOfferedItem(),
                     tradeOffer.getIncomingItem()).isPresent()){

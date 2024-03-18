@@ -1,7 +1,6 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
 import hu.wv.MonkeSwapBackend.dtos.TradeOfferDto;
-import hu.wv.MonkeSwapBackend.model.TradeOffer;
 import hu.wv.MonkeSwapBackend.services.TradeOfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ public class TradeOfferController {
 
     //POST methods
     @PostMapping
-    public void createTradeOffer(@RequestBody TradeOffer tradeOffer) {
+    public void createTradeOffer(@RequestBody TradeOfferDto tradeOffer) {
         this.tradeOfferService.createTradeOffer(tradeOffer);
     }
 
