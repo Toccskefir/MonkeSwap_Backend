@@ -1,8 +1,10 @@
 package hu.wv.MonkeSwapBackend.utils;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
+import hu.wv.MonkeSwapBackend.dtos.NotificationDto;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.model.Item;
+import hu.wv.MonkeSwapBackend.model.Notification;
 import hu.wv.MonkeSwapBackend.model.User;
 import hu.wv.MonkeSwapBackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,19 @@ public class CommonUtil {
                 .phoneNumber(user.getPhoneNumber())
                 .profilePicture(user.getProfilePicture())
                 .build();
+    }
+
+    public static List<NotificationDto> convertNotificationToNotificationDto(List<Notification> list) {
+        List<NotificationDto> listToReturn = new ArrayList<>();
+        list.forEach(item -> {
+            NotificationDto dto = NotificationDto.builder()
+                    .id(item.getId())
+                    .message(item.getMessage())
+                    .type(item.getType())
+                    .build();
+            listToReturn.add(dto);
+        });
+        return listToReturn;
     }
 
     public static ItemDto convertItemToItemDto(Item item) {

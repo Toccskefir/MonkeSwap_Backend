@@ -19,16 +19,19 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/{userId}")
-    public List<NotificationDto> getNotificationsByUserId(@PathVariable("userId") Long userId) {
-        return this.notificationService.getNotificationsByUserId(userId);
+    //GET endpoints
+    @GetMapping
+    public List<NotificationDto> getNotificationsByUserId() {
+        return this.notificationService.getNotificationsByUserId();
     }
 
+    //POST endpoints
     @PostMapping
     public void createNotification(@RequestBody Notification notification) {
         this.notificationService.createNotification(notification);
     }
 
+    //DELETE endpoints
     @DeleteMapping()
     public void deleteAllNotification() {
         this.notificationService.deleteAllNotification();
