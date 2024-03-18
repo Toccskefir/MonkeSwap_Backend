@@ -2,7 +2,6 @@ package hu.wv.MonkeSwapBackend.controllers;
 
 import hu.wv.MonkeSwapBackend.dtos.NotificationCreateDto;
 import hu.wv.MonkeSwapBackend.dtos.NotificationDto;
-import hu.wv.MonkeSwapBackend.model.Notification;
 import hu.wv.MonkeSwapBackend.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
