@@ -101,14 +101,18 @@ public class UserService {
 
     @Transactional
     public void updateUserRole(Long id, String userRole) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("userId", id));
-        UserRole role = UserRole.findByName(userRole);
-
-        if(role == null) {
-            throw new IllegalArgumentException("Given role not exists");
-        }
-        if(id == 1) {
+        if (id == 1) {
             throw new IllegalArgumentException("Can not update this user's role");
+        }
+
+        User user = this.userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("userId", id));
+        if (user.getId().equals(CommonUtil.getUserFromContextHolder().getId())) {
+            throw new IllegalArgumentException("Can not update own user role");
+        }
+
+        UserRole role = UserRole.findByName(userRole);
+        if (role == null) {
+            throw new IllegalArgumentException("Given role not exists");
         }
 
         user.setRole(role);
@@ -131,7 +135,7 @@ public class UserService {
         User userToDelete = this.userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("userId", id));
         if (userToDelete.getId().equals(CommonUtil.getUserFromContextHolder().getId())) {
-            throw new IllegalArgumentException("Can not delete your own user");
+            throw new IllegalArgumentException("Can not delete own user");
         }
 
         this.userRepository.deleteById(id);
