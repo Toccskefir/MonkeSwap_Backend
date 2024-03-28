@@ -1,9 +1,6 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
-import hu.wv.MonkeSwapBackend.dtos.ItemDto;
-import hu.wv.MonkeSwapBackend.dtos.UserDto;
-import hu.wv.MonkeSwapBackend.dtos.UserUpdateDto;
-import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
+import hu.wv.MonkeSwapBackend.dtos.*;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import hu.wv.MonkeSwapBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +56,12 @@ public class UserController {
     @PutMapping("/user")
     public void updateUser(@RequestBody UserUpdateDto userDto) {
         this.userService.updateUser(userDto);
+    }
+
+    //updates the username of the logged-in user
+    @PutMapping("/user/username")
+    public void updateUserUsername(@RequestBody UserUpdateUsernameDto usernameDto) {
+        this.userService.updateUserUsername(usernameDto);
     }
 
     //updates the password of the logged-in user

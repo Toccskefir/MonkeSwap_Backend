@@ -3,6 +3,7 @@ package hu.wv.MonkeSwapBackend.services;
 import hu.wv.MonkeSwapBackend.dtos.UserDto;
 import hu.wv.MonkeSwapBackend.dtos.UserUpdateDto;
 import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
+import hu.wv.MonkeSwapBackend.dtos.UserUpdateUsernameDto;
 import hu.wv.MonkeSwapBackend.enums.UserRole;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.exceptions.IsRegisteredException;
@@ -69,6 +70,17 @@ public class UserService {
         user.setDateOfBirth(userDto.getDateOfBirth());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setProfilePicture(userDto.getProfilePicture());
+    }
+
+    @Transactional
+    public void updateUserUsername(UserUpdateUsernameDto usernameDto) {
+        User user = CommonUtil.getUserFromContextHolder();
+
+        if(usernameDto.getUsername().isBlank()) {
+            throw new IsEmptyException("Username");
+        }
+
+        user.setUsername(usernameDto.getUsername());
     }
 
     @Transactional
