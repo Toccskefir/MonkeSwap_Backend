@@ -76,6 +76,11 @@ public class UserService {
     public void updateUserUsername(UserUpdateUsernameDto usernameDto) {
         User user = CommonUtil.getUserFromContextHolder();
 
+        if (!Objects.equals(usernameDto.getUsername(), user.getRealUsername())) {
+            if (this.userRepository.findByUsername(usernameDto.getUsername()).isPresent()) {
+                throw new IsRegisteredException("Username is taken");
+            }
+        }
         if(usernameDto.getUsername().isBlank()) {
             throw new IsEmptyException("Username");
         }
