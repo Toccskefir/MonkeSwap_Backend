@@ -29,7 +29,6 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
                                 .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
