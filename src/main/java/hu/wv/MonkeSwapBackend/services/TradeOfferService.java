@@ -79,8 +79,17 @@ public class TradeOfferService {
 
     //DELETE methods
     @Transactional
-    public void deleteTradeOfferById(Long id) {
+    public void deleteTradeOfferByIdOnDecline(Long id) {
         this.tradeOfferRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("tradeOfferId", id));
+        this.tradeOfferRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteTradeOfferByIdOnAccept(Long id) {
+        TradeOffer tradeOffer = this.tradeOfferRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("tradeOfferId", id));
+        this.itemRepository.deleteById(tradeOffer.getIncomingItem().getId());
+        this.itemRepository.deleteById(tradeOffer.getOfferedItem().getId());
         this.tradeOfferRepository.deleteById(id);
     }
 }

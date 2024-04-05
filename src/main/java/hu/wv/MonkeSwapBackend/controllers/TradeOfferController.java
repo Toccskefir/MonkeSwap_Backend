@@ -39,9 +39,15 @@ public class TradeOfferController {
     }
 
     //DELETE methods
-    //deletes a trade offer by id
-    @DeleteMapping("/{tradeOfferId}")
-    public void deleteTradeOfferById(@PathVariable("tradeOfferId")Long tradeOfferId) {
-        this.tradeOfferService.deleteTradeOfferById(tradeOfferId);
+    //deletes a trade offer by id when declined
+    @DeleteMapping("/decline/{tradeOfferId}")
+    public void deleteTradeOfferByIdOnDecline(@PathVariable("tradeOfferId")Long tradeOfferId) {
+        this.tradeOfferService.deleteTradeOfferByIdOnDecline(tradeOfferId);
+    }
+
+    //deletes a trade offer by id and its items when accepted
+    @DeleteMapping("/accept/{tradeOfferId}")
+    public void deleteTradeOfferByIdOnAccept(@PathVariable("tradeOfferId")Long tradeOfferId) {
+        this.tradeOfferService.deleteTradeOfferByIdOnAccept(tradeOfferId);
     }
 }
