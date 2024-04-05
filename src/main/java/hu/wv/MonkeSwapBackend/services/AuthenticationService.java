@@ -27,23 +27,32 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public void register(RegisterRequest request) {
-        if (repository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IsRegisteredException("Email is already registered");
-        }
-        if (repository.findByUsername(request.getUsername()).isPresent()) {
-            throw new IsRegisteredException("Username is taken");
-        }
         if (request.getEmail().isBlank()) {
             throw new IsEmptyException("Email");
+        }
+        if (!Pattern.matches("^.+@.+\\..+$", request.getEmail())) {
+            throw new IllegalArgumentException("Email is in wrong format");
+        }
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IsRegisteredException("Email is already registered");
         }
         if (request.getUsername().isBlank()) {
             throw new IsEmptyException("Username");
         }
+        if (!Pattern.matches("^.{4,}$", request.getUsername())) {
+            throw new IllegalArgumentException("Username must be at least 4 characters long");
+        }
+        if (!Pattern.matches("^[a-zA-Z\\d]+$", request.getUsername())) {
+            throw new IllegalArgumentException("Username can't contain any special character");
+        }
+        if (repository.findByUsername(request.getUsername()).isPresent()) {
+            throw new IsRegisteredException("Username is taken");
+        }
         if (request.getPassword().isBlank()) {
             throw new IsEmptyException("Password");
         }
-        if (!Pattern.matches("^.+@.+\\..+$", request.getEmail())) {
-            throw new IllegalArgumentException("Email is in wrong format");
+        if (!Pattern.matches("^.{8,}$", request.getPassword())) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
         }
 
         User user = User.builder()
