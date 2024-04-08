@@ -28,9 +28,10 @@ public class Item {
     @NotNull
     private String title;
 
-    @Column(name = "item_picture")
+    @Column(name = "item_picture", length = 1000000)
+    @Lob
     @NotNull
-    private String itemPicture;
+    private byte[] itemPicture;
 
     @NotNull
     private String description;

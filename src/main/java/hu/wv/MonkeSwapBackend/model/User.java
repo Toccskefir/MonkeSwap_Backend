@@ -59,8 +59,9 @@ public class User implements UserDetails {
     @Column(name = "phonenumber")
     private String phoneNumber;
 
-    @Column(name = "profile_picture")
-    private String profilePicture;
+    @Column(name = "profile_picture", length = 1000000)
+    @Lob
+    private byte[] profilePicture;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Item> items;
