@@ -1,13 +1,14 @@
 package hu.wv.MonkeSwapBackend.dtos;
 
-import hu.wv.MonkeSwapBackend.enums.ItemCategory;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class ItemUpdateDto {
+@Builder
+public class ItemCreateDto {
     private String title;
-    private String itemPicture;
+    private byte[] itemPicture;
     private String description;
-    private ItemCategory category;
+    private String category;
     private Integer priceTier;
 }

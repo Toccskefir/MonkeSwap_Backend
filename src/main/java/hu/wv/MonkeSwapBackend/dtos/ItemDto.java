@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemDto {
     private Long id;
     private String title;
-    private String itemPicture;
+    private byte[] itemPicture;
     private String description;
     private Integer views;
     private List<Long> reports;

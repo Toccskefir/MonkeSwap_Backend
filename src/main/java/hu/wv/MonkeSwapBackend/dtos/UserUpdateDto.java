@@ -10,5 +10,4 @@ public class UserUpdateDto {
     private String fullName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
-    private String profilePicture;
 }

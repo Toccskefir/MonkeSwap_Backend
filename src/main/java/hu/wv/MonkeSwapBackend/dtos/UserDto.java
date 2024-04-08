@@ -22,5 +22,5 @@ public class UserDto {
     private String fullName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
-    private String profilePicture;
+    private byte[] profilePicture;
 }
