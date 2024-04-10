@@ -1,7 +1,7 @@
 package hu.wv.MonkeSwapBackend.services;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
-import hu.wv.MonkeSwapBackend.dtos.ItemUpdateDto;
+import hu.wv.MonkeSwapBackend.dtos.ItemCreateDto;
 import hu.wv.MonkeSwapBackend.enums.ItemCategory;
 import hu.wv.MonkeSwapBackend.enums.ItemState;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
@@ -95,25 +95,30 @@ public class ItemService {
 
     //CREATE methods
     @Transactional
-    public void createItem(Item request) {
-        if (request.getTitle().isBlank()) {
-            throw new IsEmptyException("Title");
-        }
-        if (request.getItemPicture().isBlank()) {
+    public void createItem(ItemCreateDto itemDto) {
+        ItemCategory category = ItemCategory.findByName(itemDto.getCategory());
+
+        if (itemDto.getItemPicture() == null) {
             throw new IsEmptyException("Picture");
         }
-        if (request.getDescription().isBlank()) {
+        if (itemDto.getTitle().isBlank()) {
+            throw new IsEmptyException("Title");
+        }
+        if (itemDto.getDescription().isBlank()) {
             throw new IsEmptyException("Description");
+        }
+        if (category == null) {
+            throw new IllegalArgumentException("Given category not exists");
         }
 
         Item item = Item.builder()
-                .title(request.getTitle())
-                .itemPicture(request.getItemPicture())
-                .description(request.getDescription())
+                .title(itemDto.getTitle())
+                .itemPicture(itemDto.getItemPicture())
+                .description(itemDto.getDescription())
                 .views(0)
                 .state(ItemState.ENABLED)
-                .category(request.getCategory())
-                .priceTier(request.getPriceTier())
+                .category(category)
+                .priceTier(itemDto.getPriceTier())
                 .userId(CommonUtil.getUserFromContextHolder())
                 .build();
 
@@ -122,25 +127,29 @@ public class ItemService {
 
     //UPDATE methods
     @Transactional
-    public void updateItemById(Long id, ItemUpdateDto itemDto) {
+    public void updateItemById(Long id, ItemCreateDto itemDto) {
+        ItemCategory category = ItemCategory.findByName(itemDto.getCategory());
         User user = CommonUtil.getUserFromContextHolder();
         Item item = this.itemRepository.findByIdAndUserId(id, user)
                 .orElseThrow(() -> new ObjectNotFoundException("itemId", id));
 
+        if (itemDto.getItemPicture() == null) {
+            throw new IsEmptyException("Picture");
+        }
         if (itemDto.getTitle().isBlank()) {
             throw new IsEmptyException("Title");
         }
-        if (itemDto.getItemPicture().isBlank()) {
-            throw new IsEmptyException("Picture");
-        }
         if (itemDto.getDescription().isBlank()) {
             throw new IsEmptyException("Description");
+        }
+        if (category == null) {
+            throw new IllegalArgumentException("Given category not exists");
         }
 
         item.setTitle(itemDto.getTitle());
         item.setItemPicture(itemDto.getItemPicture());
         item.setDescription(itemDto.getDescription());
-        item.setCategory(itemDto.getCategory());
+        item.setCategory(category);
         item.setPriceTier(itemDto.getPriceTier());
     }
 

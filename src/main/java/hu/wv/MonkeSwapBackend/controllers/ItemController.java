@@ -1,8 +1,7 @@
 package hu.wv.MonkeSwapBackend.controllers;
 
 import hu.wv.MonkeSwapBackend.dtos.ItemDto;
-import hu.wv.MonkeSwapBackend.dtos.ItemUpdateDto;
-import hu.wv.MonkeSwapBackend.model.Item;
+import hu.wv.MonkeSwapBackend.dtos.ItemCreateDto;
 import hu.wv.MonkeSwapBackend.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -53,16 +52,39 @@ public class ItemController {
     //POST endpoints
     //creates an item
     @PostMapping("/item")
-    public void createItem(@RequestBody Item item) {
-        this.itemService.createItem(item);
+    public void createItem(
+            @RequestPart String title,
+            @RequestPart byte[] itemPicture,
+            @RequestPart String description,
+            @RequestPart String category,
+            @RequestPart String priceTier) {
+        ItemCreateDto itemDto = ItemCreateDto.builder()
+                .title(title)
+                .itemPicture(itemPicture)
+                .description(description)
+                .category(category)
+                .priceTier(Integer.parseInt(priceTier))
+                .build();
+        this.itemService.createItem(itemDto);
     }
 
     //PUT endpoints
     //updates an item by id
     @PutMapping("/item/{itemId}")
     public void updateItemById(
-            @PathVariable("itemId")Long itemId
-            ,@RequestBody ItemUpdateDto itemDto) {
+            @PathVariable("itemId")Long itemId,
+            @RequestPart String title,
+            @RequestPart byte[] itemPicture,
+            @RequestPart String description,
+            @RequestPart String category,
+            @RequestPart String priceTier) {
+        ItemCreateDto itemDto = ItemCreateDto.builder()
+                .title(title)
+                .itemPicture(itemPicture)
+                .description(description)
+                .category(category)
+                .priceTier(Integer.parseInt(priceTier))
+                .build();
         this.itemService.updateItemById(itemId, itemDto);
     }
 
