@@ -5,6 +5,7 @@ import hu.wv.MonkeSwapBackend.services.ItemService;
 import hu.wv.MonkeSwapBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -62,6 +63,12 @@ public class UserController {
     @PutMapping("/user/username")
     public void updateUserUsername(@RequestBody UserUpdateUsernameDto usernameDto) {
         this.userService.updateUserUsername(usernameDto);
+    }
+
+    //updates the profile picture of the logged-in user
+    @PutMapping("/user/profilepicture")
+    public void updateUserProfilePicture(@RequestPart byte[] profilePicture) {
+        this.userService.updateUserProfilePicture(profilePicture);
     }
 
     //updates the password of the logged-in user

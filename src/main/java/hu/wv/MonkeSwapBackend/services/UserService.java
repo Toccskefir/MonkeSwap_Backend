@@ -1,9 +1,6 @@
 package hu.wv.MonkeSwapBackend.services;
 
-import hu.wv.MonkeSwapBackend.dtos.UserDto;
-import hu.wv.MonkeSwapBackend.dtos.UserUpdateDto;
-import hu.wv.MonkeSwapBackend.dtos.UserUpdatePasswordDto;
-import hu.wv.MonkeSwapBackend.dtos.UserUpdateUsernameDto;
+import hu.wv.MonkeSwapBackend.dtos.*;
 import hu.wv.MonkeSwapBackend.enums.UserRole;
 import hu.wv.MonkeSwapBackend.exceptions.IsEmptyException;
 import hu.wv.MonkeSwapBackend.exceptions.IsRegisteredException;
@@ -54,9 +51,9 @@ public class UserService {
     //UPDATE methods
     @Transactional
     public void updateUser(UserUpdateDto userDto) {
-        User user = CommonUtil.getUserFromContextHolder();
+        User loggedInUser = CommonUtil.getUserFromContextHolder();
 
-        if (!Objects.equals(userDto.getUsername(), user.getRealUsername())) {
+        if (!Objects.equals(userDto.getUsername(), loggedInUser.getRealUsername())) {
             if (this.userRepository.findByUsername(userDto.getUsername()).isPresent()) {
                 throw new IsRegisteredException("Username is taken");
             }
@@ -65,18 +62,17 @@ public class UserService {
             throw new IsEmptyException("Username");
         }
 
-        user.setUsername(userDto.getUsername());
-        user.setFullName(userDto.getFullName());
-        user.setDateOfBirth(userDto.getDateOfBirth());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setProfilePicture(userDto.getProfilePicture());
+        loggedInUser.setUsername(userDto.getUsername());
+        loggedInUser.setFullName(userDto.getFullName());
+        loggedInUser.setDateOfBirth(userDto.getDateOfBirth());
+        loggedInUser.setPhoneNumber(userDto.getPhoneNumber());
     }
 
     @Transactional
     public void updateUserUsername(UserUpdateUsernameDto usernameDto) {
-        User user = CommonUtil.getUserFromContextHolder();
+        User loggedInUser = CommonUtil.getUserFromContextHolder();
 
-        if (!Objects.equals(usernameDto.getUsername(), user.getRealUsername())) {
+        if (!Objects.equals(usernameDto.getUsername(), loggedInUser.getRealUsername())) {
             if (this.userRepository.findByUsername(usernameDto.getUsername()).isPresent()) {
                 throw new IsRegisteredException("Username is taken");
             }
@@ -85,18 +81,29 @@ public class UserService {
             throw new IsEmptyException("Username");
         }
 
-        user.setUsername(usernameDto.getUsername());
+        loggedInUser.setUsername(usernameDto.getUsername());
+    }
+
+    @Transactional
+    public void updateUserProfilePicture(byte[] profilePicture) {
+        User loggedInUser = CommonUtil.getUserFromContextHolder();
+
+        if (profilePicture == null) {
+            throw new IsEmptyException("Profile picture");
+        }
+
+        loggedInUser.setProfilePicture(profilePicture);
     }
 
     @Transactional
     public void updateUserPassword(UserUpdatePasswordDto password) {
-        User user = CommonUtil.getUserFromContextHolder();
+        User loggedInUser = CommonUtil.getUserFromContextHolder();
 
         if(password.getPassword().isBlank()) {
             throw new IsEmptyException("Password");
         }
 
-        user.setPassword(encoder.encode(password.getPassword()));
+        loggedInUser.setPassword(encoder.encode(password.getPassword()));
     }
 
     @Transactional
