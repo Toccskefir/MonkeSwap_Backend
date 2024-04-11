@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -61,6 +62,12 @@ public class UserService {
         if (userDto.getUsername().isBlank()) {
             throw new IsEmptyException("Username");
         }
+        if (!Pattern.matches("^.{4,}$", userDto.getUsername())) {
+            throw new IllegalArgumentException("Username must be at least 4 characters long");
+        }
+        if (!Pattern.matches("^[a-zA-Z\\d]+$", userDto.getUsername())) {
+            throw new IllegalArgumentException("Username can't contain any special character");
+        }
 
         loggedInUser.setUsername(userDto.getUsername());
         loggedInUser.setFullName(userDto.getFullName());
@@ -79,6 +86,12 @@ public class UserService {
         }
         if(usernameDto.getUsername().isBlank()) {
             throw new IsEmptyException("Username");
+        }
+        if (!Pattern.matches("^.{4,}$", usernameDto.getUsername())) {
+            throw new IllegalArgumentException("Username must be at least 4 characters long");
+        }
+        if (!Pattern.matches("^[a-zA-Z\\d]+$", usernameDto.getUsername())) {
+            throw new IllegalArgumentException("Username can't contain any special character");
         }
 
         loggedInUser.setUsername(usernameDto.getUsername());
@@ -99,14 +112,17 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserPassword(UserUpdatePasswordDto password) {
+    public void updateUserPassword(UserUpdatePasswordDto passwordDto) {
         User loggedInUser = CommonUtil.getUserFromContextHolder();
 
-        if(password.getPassword().isBlank()) {
+        if(passwordDto.getPassword().isBlank()) {
             throw new IsEmptyException("Password");
         }
+        if (!Pattern.matches("^.{8,}$", passwordDto.getPassword())) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
 
-        loggedInUser.setPassword(encoder.encode(password.getPassword()));
+        loggedInUser.setPassword(encoder.encode(passwordDto.getPassword()));
     }
 
     @Transactional
