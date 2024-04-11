@@ -67,8 +67,8 @@ public class UserController {
 
     //updates the profile picture of the logged-in user
     @PutMapping("/user/profilepicture")
-    public void updateUserProfilePicture(@RequestPart byte[] profilePicture) {
-        this.userService.updateUserProfilePicture(profilePicture);
+    public UserUpdateProfilePictureDto updateUserProfilePicture(@RequestPart byte[] profilePicture) {
+        return this.userService.updateUserProfilePicture(profilePicture);
     }
 
     //updates the password of the logged-in user

@@ -85,7 +85,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserProfilePicture(byte[] profilePicture) {
+    public UserUpdateProfilePictureDto updateUserProfilePicture(byte[] profilePicture) {
         User loggedInUser = CommonUtil.getUserFromContextHolder();
 
         if (profilePicture == null) {
@@ -93,6 +93,9 @@ public class UserService {
         }
 
         loggedInUser.setProfilePicture(profilePicture);
+        UserUpdateProfilePictureDto dto = new UserUpdateProfilePictureDto();
+        dto.setProfilePicture(profilePicture);
+        return dto;
     }
 
     @Transactional
