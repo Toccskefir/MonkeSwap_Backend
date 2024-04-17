@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,7 +18,7 @@ public class UserDto {
     private UserRole role;
     private String dateOfRegistration;
     private String fullName;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private String phoneNumber;
     private byte[] profilePicture;
 }
