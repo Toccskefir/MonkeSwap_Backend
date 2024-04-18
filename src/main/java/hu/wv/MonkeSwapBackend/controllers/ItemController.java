@@ -71,7 +71,7 @@ public class ItemController {
     //PUT endpoints
     //updates an item by id
     @PutMapping("/item/{itemId}")
-    public void updateItemById(
+    public ItemDto updateItemById(
             @PathVariable("itemId")Long itemId,
             @RequestPart String title,
             @RequestPart byte[] itemPicture,
@@ -85,7 +85,7 @@ public class ItemController {
                 .category(category)
                 .priceTier(Integer.parseInt(priceTier))
                 .build();
-        this.itemService.updateItemById(itemId, itemDto);
+        return this.itemService.updateItemById(itemId, itemDto);
     }
 
     //increases the views of an item by id

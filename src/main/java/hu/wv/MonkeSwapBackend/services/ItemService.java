@@ -127,7 +127,7 @@ public class ItemService {
 
     //UPDATE methods
     @Transactional
-    public void updateItemById(Long id, ItemCreateDto itemDto) {
+    public ItemDto updateItemById(Long id, ItemCreateDto itemDto) {
         ItemCategory category = ItemCategory.findByName(itemDto.getCategory());
         User user = CommonUtil.getUserFromContextHolder();
         Item item = this.itemRepository.findByIdAndUserId(id, user)
@@ -151,6 +151,7 @@ public class ItemService {
         item.setDescription(itemDto.getDescription());
         item.setCategory(category);
         item.setPriceTier(itemDto.getPriceTier());
+        return CommonUtil.convertItemToItemDto(this.itemRepository.save(item));
     }
 
     @Transactional
