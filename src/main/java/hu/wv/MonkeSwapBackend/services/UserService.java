@@ -66,7 +66,13 @@ public class UserService {
             throw new IllegalArgumentException("Username must be at least 4 characters long");
         }
         if (!Pattern.matches("^[a-zA-Z\\d]+$", userDto.getUsername())) {
-            throw new IllegalArgumentException("Username can't contain any special character");
+            throw new IllegalArgumentException("Username can't contain any special character or space");
+        }
+        if (userDto.getFullName() != null &&!Pattern.matches("^[a-z A-Z]+$", userDto.getFullName())) {
+            throw new IllegalArgumentException("Full name can't contain any special character or number");
+        }
+        if (userDto.getPhoneNumber() != null && !Pattern.matches("^[+][\\d]+$", userDto.getPhoneNumber())) {
+            throw new IllegalArgumentException("Phone number should start with a + sign and contain only numbers");
         }
 
         loggedInUser.setUsername(userDto.getUsername());
