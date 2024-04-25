@@ -1,5 +1,5 @@
 # MonkeSwap Backend
-The backend application for MonkeSwap<sup>TM</sup> software created in [Spring Boot](https://spring.io/projects/spring-boot) framework
+Backend application for MonkeSwap<sup>TM</sup> software created in [Spring Boot](https://spring.io/projects/spring-boot) framework
 
 ## Getting started
 After you clone the code:
@@ -37,7 +37,7 @@ You can find OpenAPI documentations for the application under `/docs` endpoint:<
 | item_picture         | Picture of the item stored in bytes                    |
 | description          | Description of the item                                |
 | views                | The number of times other users viewed the item        |
-| reports              | An array of user ids who reported the item             |
+| reports              | A list of user ids who reported the item               |
 | state                | The current state of the item (enum)                   |
 | category             | Category of the item (enum)                            |
 | price_tier           | Price tier of the item (number between 1 and 5)        |
@@ -58,3 +58,5 @@ You can find OpenAPI documentations for the application under `/docs` endpoint:<
 | message              | Message of the notification                            |
 | type                 | Type of the notification                               |
 | user_id              | The id of the user, the notification sent to           |
+
+Database dump file: [monkeswap_database_dump](monkeswap_database_dump.sql)
