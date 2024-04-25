@@ -1,5 +1,11 @@
 # MonkeSwap Backend
-The backend application for MonkeSwap<sup>TM</sup> softwares created in [Spring Boot](https://spring.io/projects/spring-boot) framework
+The backend application for MonkeSwap<sup>TM</sup> software created in [Spring Boot](https://spring.io/projects/spring-boot) framework
+
+## Getting started
+After you clone the code:
+  1. Start a mysql server on localhost port 3306 ( or edit the [application.properties](src/main/resources/application.properties) file)
+  2. Create an empty database called **monkeswap**
+  3. Run the application
 
 ## Database
 ![MonkeSwap_Database](https://github.com/Toccskefir/MonkeSwap_Backend/assets/91217116/62d74b84-d1d3-4412-988a-f7a4f5318aa3)
