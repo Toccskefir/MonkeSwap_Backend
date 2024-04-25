@@ -59,4 +59,4 @@ You can find OpenAPI documentations for the application under `/docs` endpoint:<
 | type                 | Type of the notification                               |
 | user_id              | The id of the user, the notification sent to           |
 
-Database dump file: [monkeswap_database_dump](monkeswap_database_dump.sql)
+Click [here](monkeswap_database_dump.sql) for database dump file
