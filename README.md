@@ -7,6 +7,11 @@ After you clone the code:
   2. Create an empty database called **monkeswap**
   3. Run the application
 
+## Documentation
+You can find OpenAPI documentations for the application under `/docs` endpoint:</br>
+ 1. Documentation for OpenAPI  `/docs/openapi`
+ 2. Documentation for endpoints `/docs/endpoints`
+
 ## Database
 ![MonkeSwap_Database](https://github.com/Toccskefir/MonkeSwap_Backend/assets/91217116/62d74b84-d1d3-4412-988a-f7a4f5318aa3)
 ### users table
